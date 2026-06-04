@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>Mi Rutina</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+::-webkit-scrollbar{display:none;}
+body{background:#0c0c10;color:#f0f0f0;font-family:system-ui,-apple-system,sans-serif;max-width:480px;margin:0 auto;min-height:100vh;}
+input::placeholder{color:rgba(255,255,255,0.18);}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;}
+button{font-family:inherit;cursor:pointer;}
+
+.glow{position:fixed;top:0;left:50%;transform:translateX(-50%);width:480px;height:220px;pointer-events:none;z-index:0;transition:background 0.6s;}
+
+/* Header */
+.header{position:sticky;top:0;z-index:100;background:rgba(12,12,16,0.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,0.05);padding:16px 20px 12px;}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+.header-left{}
+.eyebrow{font-size:9px;letter-spacing:5px;color:rgba(255,255,255,0.18);text-transform:uppercase;margin-bottom:4px;}
+.day-title{font-size:17px;font-weight:700;letter-spacing:-0.3px;line-height:1.2;}
+.week-pill{display:flex;align-items:center;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:100px;padding:3px 4px;flex-shrink:0;gap:2px;}
+.week-btn{width:26px;height:26px;border-radius:50%;border:none;background:transparent;color:rgba(255,255,255,0.18);font-size:15px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.week-btn.active{background:rgba(255,255,255,0.08);color:#fff;}
+.week-label{text-align:center;min-width:56px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.5px;}
+
+/* Day tabs */
+.day-tabs{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px;margin-bottom:12px;}
+.day-tab{flex-shrink:0;padding:5px 13px;border-radius:100px;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;letter-spacing:0.3px;}
+
+/* Progress */
+.progress-row{display:flex;align-items:center;gap:10px;}
+.progress-bar{flex:1;height:1.5px;background:rgba(255,255,255,0.06);border-radius:100px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:100px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1);}
+.progress-label{font-size:10px;font-weight:700;letter-spacing:0.5px;}
+
+/* Legend */
+.legend{display:flex;gap:14px;padding:12px 20px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.04);}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.3px;}
+.legend-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+
+/* Exercise list */
+.exercises{padding:16px 16px 8px;}
+.section-label{font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.18);text-transform:uppercase;margin-bottom:12px;}
+.ex-list{display:flex;flex-direction:column;gap:6px;}
+
+.ex-card{border-radius:14px;overflow:hidden;transition:background 0.2s, border-color 0.2s;}
+.ex-row{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;}
+
+.ex-dot{display:none;}
+
+.ex-info{flex:1;min-width:0;}
+.ex-name{font-size:14px;font-weight:600;color:#eee;letter-spacing:-0.2px;}
+.ex-name.done{color:rgba(255,255,255,0.25);text-decoration:line-through;}
+.ex-target{font-size:10px;color:rgba(255,255,255,0.25);margin-top:2px;letter-spacing:0.2px;}
+.ex-tags{display:flex;gap:5px;margin-top:6px;align-items:center;flex-wrap:wrap;}
+.ex-sets{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;}
+.equip-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:100px;}
+.ex-suggested{font-size:10px;color:rgba(255,255,255,0.3);}
+
+.check-btn{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;font-size:12px;font-weight:900;border:1.5px solid;}
+
+/* Expanded */
+.ex-expanded{padding:0 14px 14px;}
+.ex-desc{font-size:12.5px;line-height:1.7;color:rgba(255,255,255,0.45);margin:0 0 10px;}
+
+.video-btn{display:flex;align-items:center;gap:10px;background:rgba(255,40,40,0.07);border:1px solid rgba(255,40,40,0.18);border-radius:10px;padding:10px 13px;margin-bottom:12px;cursor:pointer;transition:background 0.15s;width:100%;}
+.video-btn:hover{background:rgba(255,40,40,0.13);}
+.video-play{width:28px;height:28px;border-radius:50%;background:rgba(255,50,50,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:#ff6b6b;font-weight:900;}
+.video-info{flex:1;text-align:left;}
+.video-label{font-size:12px;font-weight:600;color:#ff7070;}
+.video-sub{font-size:10px;color:rgba(255,255,255,0.25);margin-top:1px;}
+
+.stats-row{display:flex;background:rgba(255,255,255,0.03);border-radius:10px;overflow:hidden;margin-bottom:10px;border:1px solid rgba(255,255,255,0.05);}
+.stat{flex:1;text-align:center;padding:10px 4px;}
+.stat-val{font-size:17px;font-weight:800;}
+.stat-lbl{font-size:8px;color:rgba(255,255,255,0.22);letter-spacing:1.5px;margin-top:2px;text-transform:uppercase;}
+
+.weight-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:12px 14px;}
+.weight-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.weight-lbl{font-size:9px;letter-spacing:3px;color:rgba(255,255,255,0.25);text-transform:uppercase;}
+.weight-suggested{font-size:11px;font-weight:700;}
+.prog-dots{display:flex;gap:4px;margin-bottom:11px;overflow-x:auto;padding-bottom:2px;}
+.prog-dot{flex-shrink:0;text-align:center;cursor:pointer;}
+.prog-dot-inner{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;transition:all 0.15s;}
+.prog-dot-lbl{font-size:7px;color:rgba(255,255,255,0.18);margin-top:3px;letter-spacing:0.5px;}
+.weight-input-wrap{position:relative;}
+.weight-input{width:100%;background:rgba(255,255,255,0.05);border-radius:9px;padding:10px 50px 10px 13px;color:#fff;font-size:14px;outline:none;transition:border-color 0.2s;font-family:inherit;}
+.weight-unit{position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:11px;color:rgba(255,255,255,0.25);pointer-events:none;}
+.weight-feedback{margin-top:7px;font-size:11px;line-height:1.4;}
+.notes-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:9px;padding:10px 13px;color:#fff;font-size:13px;outline:none;font-family:inherit;}
+
+/* Cardio */
+.cardio-section{padding:12px 16px 60px;}
+.cardio-card{border-radius:14px;padding:16px;}
+.cardio-title{font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.25);text-transform:uppercase;margin-bottom:10px;}
+.cardio-text{font-size:13px;line-height:1.75;color:rgba(255,255,255,0.5);}
+.cardio-note{font-size:11px;color:rgba(255,255,255,0.28);margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);line-height:1.5;}
+</style>
+</head>
+<body>
+
+<div class="glow" id="glow"></div>
+
+<div class="header">
+  <div class="header-top">
+    <div class="header-left">
+      <div class="eyebrow">Mi Rutina · 5 Días</div>
+      <div class="day-title" id="dayTitle"></div>
+    </div>
+    <div class="week-pill">
+      <button class="week-btn" id="weekPrev" onclick="changeWeek(-1)">‹</button>
+      <div class="week-label" id="weekLabel"></div>
+      <button class="week-btn active" onclick="changeWeek(1)">›</button>
+    </div>
+  </div>
+  <div class="day-tabs" id="dayTabs"></div>
+  <div class="progress-row">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-label" id="progressLabel"></span>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div>Máquina</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#fb923c"></div>Mancuernas</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div>Polea</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div>Peso corporal</div>
+</div>
+
+<div class="exercises">
+  <div class="section-label">Fuerza · 30 min</div>
+  <div class="ex-list" id="exList"></div>
+</div>
+
+<div class="cardio-section">
+  <div class="cardio-card" id="cardioCard">
+    <div class="cardio-title">Cardio · 30 min</div>
+    <div class="cardio-text" id="cardioText"></div>
+    <div class="cardio-note" id="cardioNote"></div>
+  </div>
+</div>
+
+<script>
+const equipStyles = {
+  maquina:    {label:"Máquina",    color:"#60a5fa", bg:"rgba(96,165,250,0.1)",  dot:"#60a5fa"},
+  mancuernas: {label:"Mancuernas", color:"#fb923c", bg:"rgba(251,146,60,0.1)",  dot:"#fb923c"},
+  polea:      {label:"Polea",      color:"#a78bfa", bg:"rgba(167,139,250,0.1)", dot:"#a78bfa"},
+  libre:      {label:"Libre",      color:"#4ade80", bg:"rgba(74,222,128,0.1)",  dot:"#4ade80"},
+};
+
+const weightConfig = {
+  "Press de Hombro":           {base:5,  inc:1,   unit:"kg c/u"},
+  "Elevaciones Laterales":     {base:3,  inc:0.5, unit:"kg c/u"},
+  "Elevaciones Frontales":     {base:3,  inc:0.5, unit:"kg c/u"},
+  "Tríceps en Polea":          {base:8,  inc:2,   unit:"kg"},
+  "Patada de Tríceps":         {base:4,  inc:1,   unit:"kg c/u"},
+  "Press Francés":             {base:4,  inc:1,   unit:"kg c/u"},
+  "Abdomen Máquina":           {base:12, inc:2,   unit:"kg"},
+  "Hip Thrust":                {base:15, inc:2.5, unit:"kg"},
+  "Peso Muerto Rumano":        {base:8,  inc:2,   unit:"kg c/u"},
+  "Hip Thrust Unilateral":     {base:10, inc:2,   unit:"kg"},
+  "Peso Muerto Una Pierna":    {base:6,  inc:1.5, unit:"kg c/u"},
+  "Sentadilla Goblet":         {base:8,  inc:2,   unit:"kg"},
+  "Sentadilla Sumo":           {base:10, inc:2,   unit:"kg"},
+  "Patada de Glúteo":          {base:8,  inc:2,   unit:"kg"},
+  "Abducción de Cadera":       {base:20, inc:5,   unit:"kg"},
+  "Jalón al Pecho":            {base:18, inc:4,   unit:"kg"},
+  "Remo con Mancuerna":        {base:8,  inc:2,   unit:"kg c/u"},
+  "Remo en Polea":             {base:12, inc:2.5, unit:"kg"},
+  "Curl Bíceps":               {base:4,  inc:1,   unit:"kg c/u"},
+  "Curl Martillo":             {base:4,  inc:1,   unit:"kg c/u"},
+  "Curl Concentrado":          {base:4,  inc:1,   unit:"kg c/u"},
+  "Curl Predicador":           {base:7,  inc:2,   unit:"kg"},
+  "Tríceps Barra V":           {base:8,  inc:2,   unit:"kg"},
+  "Russian Twist":             {base:4,  inc:1,   unit:"kg"},
+  "Extensión Cuádriceps":      {base:12, inc:2,   unit:"kg"},
+};
+
+function getCardio(dayId, week) {
+  const sm = Math.min(10 + Math.floor((week-1)/2)*5, 30);
+  const rest = 30 - sm;
+  const note = sm < 30
+    ? `Progresion escaladora: arrancas con ${sm} min. Sube 5 min cada 2 semanas hasta llegar a 30.`
+    : `Ya llegaste a los 30 min completos de escaladora.`;
+
+  const map = {
+    1: {
+      text: `${sm} min escaladora (StairMaster) ritmo constante + ${rest} min cinta en intervalos: 1 min trote / 1 min caminata.`,
+      note
+    },
+    2: {
+      text: `40 min cinta con inclinación alta (nivel 10-12, vel 5-6). Caminata empinada sin correr — quema grasa sin construir pierna.`,
+      note: ""
+    },
+    3: {
+      text: `Remo en intervalos: 500m fuerte, 1 min descanso, repetir 6 veces. El display te muestra la distancia.`,
+      note: ""
+    },
+    4: {
+      text: `${sm} min escaladora ritmo moderado + ${rest} min cinta plana suave para bajar pulsaciones.`,
+      note
+    },
+    5: {
+      text: `HIIT en cinta o escaladora: 30 seg al maximo / 30 seg suave, 15 a 20 rondas. Corto e intenso.`,
+      note: ""
+    },
+  };
+  return map[dayId];
+}
+
+const days = [
+  {
+    id:1, label:"D1", title:"Hombros · Triceps · Abs", color:"#e879f9",
+    exercises:[
+      {name:"Press de Hombro",       equip:"maquina",    target:"Hombros",          sets:4, reps:"15",     desc:"Sentada en la maquina de press de hombro. Ajusta el asiento para que las asas queden a la altura de los hombros. Empujas hacia arriba sin bloquear los codos arriba. Baja lento y controlado.", video:"https://www.youtube.com/watch?v=Dtow4JuFkJA", vl:"Como hacer press de hombros en maquina"},
+      {name:"Elevaciones Laterales", equip:"polea",      target:"Hombros laterales",sets:4, reps:"20",     desc:"Cable en posicion baja, manija simple. De lado a la maquina, agarras con la mano mas alejada. Subes el brazo en cruz hasta la altura del hombro. La polea da tension constante a diferencia de la mancuerna.", video:"https://www.youtube.com/watch?v=b1SohZdfzGA", vl:"Elevaciones laterales en polea — tecnica"},
+      {name:"Elevaciones Frontales", equip:"polea",      target:"Hombro anterior",  sets:3, reps:"15",     desc:"Cable en posicion baja, de espaldas a la maquina. Agarre prono (palma hacia abajo). Subes el brazo hacia adelante hasta la altura del hombro. Un brazo por vez.", video:"https://www.youtube.com/watch?v=TEQPu0w9cHo", vl:"Elevacion frontal de hombros con cable"},
+      {name:"Tríceps en Polea",      equip:"polea",      target:"Triceps",          sets:4, reps:"20",     desc:"Cable en posicion alta con cuerda. Codos pegados al cuerpo, estiras los brazos hacia abajo. Al final del movimiento separas las puntas de la cuerda hacia afuera para mayor contraccion.", video:"https://www.youtube.com/watch?v=XUsty_6ux1k", vl:"Extension de triceps en polea alta con cuerda"},
+      {name:"Patada de Tríceps",     equip:"polea",      target:"Triceps",          sets:3, reps:"15",     desc:"Cable en posicion baja. Inclinada hacia adelante, codo doblado 90 grados pegado al cuerpo. Estiras el brazo hacia atras hasta que quede recto. Solo se mueve el codo, nada mas.", video:"https://www.youtube.com/watch?v=UZNYR5xUYQY", vl:"Patada de triceps en polea baja — tecnica correcta"},
+      {name:"Abdomen Máquina",       equip:"maquina",    target:"Abdomen",          sets:4, reps:"20",     desc:"Codos en los apoyos curvos de la maquina Panatta. Bajas contrayendo el core hacia las rodillas. Sube lento controlando el movimiento.", video:"https://www.youtube.com/watch?v=DLU0RKjZV2g", vl:"Crunch abdominal en maquina — tecnica"},
+      {name:"Plancha",               equip:"libre",      target:"Core",             sets:3, reps:"45 seg", desc:"Apoyada en antebrazos y puntas de pie. Cuerpo recto, sin hundir la cadera ni elevarla. Respira.", video:null, vl:null},
+    ]
+  },
+  {
+    id:2, label:"D2", title:"Gluteo — Sesion principal", color:"#f472b6",
+    exercises:[
+      {name:"Hip Thrust",            equip:"mancuernas", target:"Gluteo mayor",      sets:4, reps:"15",     desc:"Espalda alta apoyada en banco, mancuerna grande en caderas. Subes las caderas hasta quedar en linea recta, apretando el gluteo arriba. Bajas sin tocar el suelo.", video:"https://www.youtube.com/watch?v=fWdFKm56euc", vl:"Hip thrust con mancuerna"},
+      {name:"Peso Muerto Rumano",    equip:"mancuernas", target:"Isquiotibiales · Gluteo", sets:4, reps:"15", desc:"De pie, mancuernas al frente. Bajas deslizandolas por las piernas con espalda recta hasta sentir el estiramiento. Subes apretando el gluteo.", video:"https://www.youtube.com/watch?v=9j_L1KgpK8Y", vl:"Peso muerto rumano con mancuernas"},
+      {name:"Sentadilla Sumo",       equip:"mancuernas", target:"Gluteo · Aductores",sets:3, reps:"20",     desc:"Pies bien abiertos en sumo, punta de pies hacia afuera. Una mancuerna colgando en el centro. Bajas con la espalda recta. Trabaja mas gluteo y aductor que cuadriceps.", video:"https://www.youtube.com/watch?v=fluAJnTl-xE", vl:"Como hacer sentadilla sumo con mancuerna"},
+      {name:"Patada de Glúteo",      equip:"polea",      target:"Gluteo",           sets:4, reps:"20 c/u",  desc:"Cable en posicion baja con tobillera. Te inclinás hacia adelante apoyando en la maquina. Empujas la pierna hacia atras en linea recta, apretando el gluteo arriba. No arquees la espalda.", video:"https://www.youtube.com/watch?v=fWdFKm56euc", vl:"Patada de gluteo en cable"},
+      {name:"Abducción de Cadera",   equip:"maquina",    target:"Gluteo medio",     sets:4, reps:"25",      desc:"Sentada, piernas entre las almohadillas. Las abris hacia afuera lento. Pausa arriba un segundo antes de volver. Trabaja el gluteo del costado que da forma.", video:"https://www.youtube.com/watch?v=2vCRMi-lgJ4", vl:"Abduccion de cadera en maquina — tecnica correcta"},
+      {name:"Plancha Lateral",       equip:"libre",      target:"Core · Oblicuos",  sets:3, reps:"40 seg c/u", desc:"Apoyada en un antebrazo y el costado del pie. Cuerpo en linea recta. Cambia de lado. Fortalece el core lateral sin construir cintura.", video:null, vl:null},
+    ]
+  },
+  {
+    id:3, label:"D3", title:"Espalda · Biceps · Abs", color:"#38bdf8",
+    exercises:[
+      {name:"Jalón al Pecho",        equip:"polea",      target:"Dorsales",         sets:4, reps:"15",     desc:"Sentada bajo la polea alta con las rodillas bajo el pad que te fija. Manos en la barra ancha con agarre prono (palmas mirando hacia adelante, alejadas de vos). Manos mas anchas que los hombros. Tiras la barra hacia el pecho alto, codos hacia abajo y atras. No vayas mas abajo del menton. Baja la barra lento controlando.", video:"https://www.youtube.com/watch?v=Ln0CZzrlTEw", vl:"Jalon al pecho — tutorial paso a paso"},
+      {name:"Remo con Mancuerna",    equip:"mancuernas", target:"Espalda media",    sets:4, reps:"15 c/u",  desc:"Rodilla y mano del mismo lado apoyadas en el banco. Mancuerna en la mano libre. Tiras hacia la cadera con el codo pegado al cuerpo. Sin rotar el torso.", video:"https://www.youtube.com/watch?v=ThYEWIpPB0o", vl:"Remo con mancuerna unilateral — tecnica completa"},
+      {name:"Remo en Polea",         equip:"polea",      target:"Espalda media",    sets:3, reps:"15",     desc:"Sentada en la polea baja, pies en los apoyos. Tiras la manija hacia el ombligo con codos cerca del cuerpo. Espalda recta siempre.", video:"https://www.youtube.com/watch?v=duJvtG1qIko", vl:"Remo en polea baja — tecnica"},
+      {name:"Curl Bíceps",           equip:"mancuernas", target:"Biceps",           sets:3, reps:"20",     desc:"De pie, mancuernas a los costados. Doblas el codo llevando la mancuerna al hombro. Baja lento. Podes hacerlo alternado o los dos juntos.", video:"https://www.youtube.com/watch?v=D1DxpRE5FkU", vl:"Curl de biceps con mancuerna"},
+      {name:"Curl Martillo",         equip:"mancuernas", target:"Biceps · Antebrazo",sets:3, reps:"15",    desc:"Igual que el curl pero con los pulgares mirando al techo (agarre neutro, como un martillo). Trabaja el biceps desde otro angulo y el antebrazo.", video:"https://www.youtube.com/watch?v=i60DlC_Wj0E", vl:"Curl martillo — tecnica"},
+      {name:"Bicicleta Abdominal",   equip:"libre",      target:"Oblicuos",         sets:4, reps:"25",     desc:"Acostada, manos en la nuca. Codo derecho a rodilla izquierda, luego al reves. Lento y controlado, no lo hagas rapido.", video:null, vl:null},
+      {name:"Russian Twist",         equip:"mancuernas", target:"Oblicuos",         sets:3, reps:"20",     desc:"Sentada en V, piernas levantadas, mancuerna entre manos. Giras el torso de lado a lado tocando la mancuerna en el suelo.", video:null, vl:null},
+    ]
+  },
+  {
+    id:4, label:"D4", title:"Gluteo — Sesion de mantenimiento", color:"#fb923c",
+    exercises:[
+      {name:"Hip Thrust Unilateral", equip:"mancuernas", target:"Gluteo mayor",     sets:3, reps:"15 c/u",  desc:"Igual que el hip thrust pero con una sola pierna. La otra va extendida al frente. Mas dificil, mas aislamiento. Una mancuerna en la cadera.", video:"https://www.youtube.com/watch?v=fWdFKm56euc", vl:"Hip thrust unilateral — gluteo"},
+      {name:"Peso Muerto Una Pierna",equip:"mancuernas", target:"Isquiotibiales · Gluteo", sets:3, reps:"12 c/u", desc:"De pie en una pierna, mancuerna en la mano opuesta. Bajas el torso hacia adelante mientras la pierna libre va hacia atras. Equilibrio y control. Muy efectivo para el gluteo.", video:"https://www.youtube.com/watch?v=-2h7UPouOqc", vl:"Peso muerto rumano a una pierna con mancuerna"},
+      {name:"Sentadilla Goblet",     equip:"mancuernas", target:"Gluteo · Cuadriceps", sets:3, reps:"20",   desc:"Una mancuerna grande sostenida en el pecho con ambas manos. Pies al ancho de las caderas. Sentadilla profunda con la espalda recta. Peso moderado para no engrosar pierna.", video:"https://www.youtube.com/watch?v=5HHITKuLxUs", vl:"Como hacer sentadilla goblet con mancuerna"},
+      {name:"Extensión Cuádriceps",  equip:"maquina",    target:"Cuadriceps",       sets:3, reps:"20",     desc:"Sentada, tobillos bajo los rodillos. Estiras las piernas hacia arriba. Peso bajo — el objetivo es tonificar sin agregar volumen.", video:"https://www.youtube.com/watch?v=r7ZMTzfiICA", vl:"Extension de cuadriceps en maquina"},
+      {name:"Patada de Glúteo",      equip:"polea",      target:"Gluteo",           sets:3, reps:"20 c/u",  desc:"Cable en posicion baja con tobillera. Empujas la pierna hacia atras apretando el gluteo arriba. No arquees la espalda.", video:"https://www.youtube.com/watch?v=fWdFKm56euc", vl:"Patada de gluteo en cable"},
+      {name:"Plancha",               equip:"libre",      target:"Core",             sets:3, reps:"50 seg", desc:"Apoyada en antebrazos y puntas de pie. Cuerpo recto. Esta vez aguantas un poco mas que el dia 1.", video:null, vl:null},
+    ]
+  },
+  {
+    id:5, label:"D5", title:"Brazos · Abs · HIIT", color:"#34d399",
+    exercises:[
+      {name:"Curl Concentrado",      equip:"mancuernas", target:"Biceps",           sets:3, reps:"15 c/u",  desc:"Sentada en el borde del banco, codo apoyado en la parte interna del muslo. Curl lento y completo. Aisla el biceps al maximo.", video:"https://www.youtube.com/watch?v=ogwifBtU7aM", vl:"Curl de biceps concentrado — tecnica y errores"},
+      {name:"Curl Predicador",       equip:"maquina",    target:"Biceps aislado",   sets:3, reps:"15",     desc:"Codos apoyados en la almohadilla inclinada. Doblas los brazos sin que los codos se muevan. La maquina italiana blanca del gym.", video:"https://www.youtube.com/watch?v=lbbDV2_Ho8E", vl:"Curl predicador en maquina — principiantes"},
+      {name:"Tríceps Barra V",       equip:"polea",      target:"Triceps",          sets:4, reps:"20",     desc:"Barra en V en la polea alta. Codos pegados al cuerpo. Estiras hacia abajo. Aprietas abajo un segundo antes de volver.", video:"https://www.youtube.com/watch?v=UQZdNqr5EhA", vl:"Triceps barra V en polea"},
+      {name:"Press Francés",         equip:"mancuernas", target:"Triceps",          sets:3, reps:"15",     desc:"Acostada en banco. Mancuernas arriba con brazos extendidos. Doblas los codos llevando las mancuernas hacia la frente, estiras. Solo se mueven los codos.", video:"https://www.youtube.com/watch?v=HAyqcljtJuo", vl:"Press frances con mancuernas"},
+      {name:"Abdomen Máquina",       equip:"maquina",    target:"Abdomen",          sets:4, reps:"20",     desc:"Codos en los apoyos curvos. Bajas contrayendo el core hacia las rodillas. Sube lento controlando.", video:"https://www.youtube.com/watch?v=DLU0RKjZV2g", vl:"Crunch abdominal en maquina — tecnica"},
+      {name:"Russian Twist",         equip:"mancuernas", target:"Oblicuos",         sets:3, reps:"20",     desc:"Sentada en V, piernas levantadas, mancuerna entre manos. Giras el torso de lado a lado tocando el suelo.", video:null, vl:null},
+      {name:"Plancha Lateral",       equip:"libre",      target:"Core · Oblicuos",  sets:3, reps:"40 seg c/u", desc:"Apoyada en un antebrazo y el costado del pie. Cuerpo en linea recta. Cambia de lado.", video:null, vl:null},
+    ]
+  },
+];
+
+let activeDay=0, currentWeek=1, completed={}, expanded=null, weights={};
+
+function saveState() {
+  try {
+    localStorage.setItem('gym_completed', JSON.stringify(completed));
+    localStorage.setItem('gym_weights', JSON.stringify(weights));
+    localStorage.setItem('gym_week', currentWeek);
+    localStorage.setItem('gym_day', activeDay);
+  } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const c = localStorage.getItem('gym_completed');
+    const w = localStorage.getItem('gym_weights');
+    const wk = localStorage.getItem('gym_week');
+    const d = localStorage.getItem('gym_day');
+    if(c) completed = JSON.parse(c);
+    if(w) weights = JSON.parse(w);
+    if(wk) currentWeek = parseInt(wk);
+    if(d) activeDay = parseInt(d);
+  } catch(e) {}
+}
+
+function getSuggested(name, week){
+  const cfg = weightConfig[name];
+  if(!cfg) return null;
+  return {value: cfg.base + cfg.inc*(week-1), unit: cfg.unit, inc: cfg.inc};
+}
+
+function render(){
+  const day = days[activeDay];
+  const color = day.color;
+  const cardio = getCardio(day.id, currentWeek);
+
+  document.getElementById('glow').style.background = `radial-gradient(ellipse at 50% 0%, ${color}12 0%, transparent 65%)`;
+  document.getElementById('dayTitle').textContent = day.title;
+  document.getElementById('weekLabel').textContent = 'Semana ' + currentWeek;
+  document.getElementById('weekPrev').className = 'week-btn' + (currentWeek > 1 ? ' active' : '');
+
+  document.getElementById('dayTabs').innerHTML = days.map((d,i) => `
+    <button class="day-tab" onclick="switchDay(${i})"
+      style="border:1px solid ${i===activeDay ? d.color : 'rgba(255,255,255,0.07)'};
+             background:${i===activeDay ? d.color+'15' : 'transparent'};
+             color:${i===activeDay ? d.color : 'rgba(255,255,255,0.28)'}">
+      ${d.label}
+    </button>`).join('');
+
+  const doneCount = day.exercises.filter(e => completed[day.id+'-'+e.name]).length;
+  const pct = (doneCount / day.exercises.length * 100).toFixed(0);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressFill').style.background = color;
+  document.getElementById('progressLabel').style.color = color;
+  document.getElementById('progressLabel').textContent = doneCount + '/' + day.exercises.length;
+
+  document.getElementById('exList').innerHTML = day.exercises.map(ex => {
+    const key = day.id + '-' + ex.name;
+    const done = !!completed[key];
+    const open = expanded === key;
+    const sug = getSuggested(ex.name, currentWeek);
+    const userW = weights[key] || '';
+    const es = equipStyles[ex.equip];
+
+
+
+    let expandedHTML = '';
+    if(open) {
+      const videoHTML = ex.video ? `
+        <button class="video-btn" onclick="event.stopPropagation();window.open('${ex.video}','_blank')">
+          <div class="video-play">&#9654;</div>
+          <div class="video-info">
+            <div class="video-label">${ex.vl}</div>
+            <div class="video-sub">Abrir en YouTube</div>
+          </div>
+        </button>` : '';
+
+      let weightHTML = '';
+      if(sug) {
+        const dots = [1,2,3,4,5,6,7,8].map(w => {
+          const sw = getSuggested(ex.name, w);
+          const isCur = w === currentWeek;
+          return `<div class="prog-dot" onclick="event.stopPropagation();jumpWeek(${w})">
+            <div class="prog-dot-inner" style="background:${isCur ? color : 'rgba(255,255,255,0.05)'};color:${isCur ? '#000' : 'rgba(255,255,255,0.35)'};border:1px solid ${isCur ? color : 'rgba(255,255,255,0.07)'};">${sw.value}</div>
+            <div class="prog-dot-lbl">S${w}</div>
+          </div>`;
+        }).join('');
+
+        let feedback = '';
+        if(userW && Number(userW) > 0) {
+          feedback = Number(userW) >= sug.value
+            ? `<div class="weight-feedback" style="color:#4ade80">Bien. La proxima semana proba ${sug.value + sug.inc} ${sug.unit}</div>`
+            : `<div class="weight-feedback" style="color:#fbbf24">Sugerido: ${sug.value} ${sug.unit}. Si es mucho, esta bien ir de a poco.</div>`;
+        }
+
+        weightHTML = `<div class="weight-box">
+          <div class="weight-header">
+            <span class="weight-lbl">Peso</span>
+            <span class="weight-suggested" style="color:${color}">S${currentWeek} — ${sug.value} ${sug.unit}</span>
+          </div>
+          <div class="prog-dots">${dots}</div>
+          <div class="weight-input-wrap">
+            <input class="weight-input" type="number" placeholder="Peso usado hoy (ej: ${sug.value})"
+              value="${userW}" style="border:1px solid ${userW ? color+'50' : 'rgba(255,255,255,0.07)'}"
+              oninput="event.stopPropagation();saveWeight('${key}',this.value)"
+              onclick="event.stopPropagation()"/>
+            <span class="weight-unit">${sug.unit}</span>
+          </div>${feedback}
+        </div>`;
+      } else {
+        weightHTML = `<div class="weight-box">
+          <div class="weight-lbl" style="margin-bottom:8px">Notas</div>
+          <input class="notes-input" type="text" placeholder="Como te fue..."
+            value="${userW}"
+            oninput="event.stopPropagation();saveWeight('${key}',this.value)"
+            onclick="event.stopPropagation()"/>
+        </div>`;
+      }
+
+      expandedHTML = `<div class="ex-expanded">
+        <p class="ex-desc">${ex.desc}</p>
+        ${videoHTML}
+        <div class="stats-row">
+          <div class="stat" style="border-right:1px solid rgba(255,255,255,0.04)">
+            <div class="stat-val" style="color:${color}">${ex.sets}</div><div class="stat-lbl">Series</div>
+          </div>
+          <div class="stat" style="border-right:1px solid rgba(255,255,255,0.04)">
+            <div class="stat-val" style="color:#eee">${ex.reps}</div><div class="stat-lbl">Reps</div>
+          </div>
+          <div class="stat">
+            <div class="stat-val" style="color:#eee">60s</div><div class="stat-lbl">Descanso</div>
+          </div>
+        </div>
+        ${weightHTML}
+      </div>`;
+    }
+
+    return `<div class="ex-card" style="background:${done ? color+'0d' : 'rgba(255,255,255,0.025)'};border:1px solid ${done ? color+'28' : 'rgba(255,255,255,0.05)'}">
+      <div class="ex-row" onclick="toggleExpand('${key}')">
+
+        <div class="ex-info">
+          <div class="ex-name${done ? ' done' : ''}">${ex.name}</div>
+          <div class="ex-target">${ex.target}</div>
+          <div class="ex-tags">
+            <span class="ex-sets" style="color:${color};background:${color}15">${ex.sets} × ${ex.reps}</span>
+            <span class="equip-badge" style="color:${es.color};background:${es.bg}">${es.label}</span>
+            ${sug ? `<span class="ex-suggested">${sug.value} ${sug.unit}</span>` : ''}
+          </div>
+        </div>
+        <button class="check-btn" style="border-color:${done ? color : 'rgba(255,255,255,0.1)'};background:${done ? color : 'transparent'};color:${done ? '#000' : 'transparent'}"
+          onclick="event.stopPropagation();toggleDone('${key}')">&#10003;</button>
+      </div>
+      ${expandedHTML}
+    </div>`;
+  }).join('');
+
+  document.getElementById('cardioCard').style.background = color + '0e';
+  document.getElementById('cardioCard').style.border = '1px solid ' + color + '22';
+  document.getElementById('cardioText').textContent = cardio.text;
+  document.getElementById('cardioNote').textContent = cardio.note;
+  document.getElementById('cardioNote').style.display = cardio.note ? 'block' : 'none';
+}
+
+function switchDay(i){ activeDay=i; expanded=null; saveState(); render(); }
+function changeWeek(d){ currentWeek=Math.max(1,Math.min(12,currentWeek+d)); saveState(); render(); }
+function jumpWeek(w){ currentWeek=w; render(); }
+function toggleDone(key){ completed[key]=!completed[key]; saveState(); render(); }
+function toggleExpand(key){ expanded = expanded===key ? null : key; render(); }
+function saveWeight(key,val){ weights[key]=val; saveState(); }
+
+loadState();
+render();
+</script>
+</body>
+</html>
