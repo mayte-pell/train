@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<title>Mi Rutina</title>
+<title>La Máquina</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 ::-webkit-scrollbar{display:none;}
@@ -13,45 +13,35 @@ body{background:#0c0c10;color:#f0f0f0;font-family:system-ui,-apple-system,sans-s
 input::placeholder{color:rgba(255,255,255,0.18);}
 input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;}
 button{font-family:inherit;cursor:pointer;}
-
 .glow{position:fixed;top:0;left:50%;transform:translateX(-50%);width:480px;height:220px;pointer-events:none;z-index:0;transition:background 0.6s;}
-
-/* Header */
 .header{position:sticky;top:0;z-index:100;background:rgba(12,12,16,0.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,0.05);padding:16px 20px 12px;}
 .header-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
-.header-left{}
 .eyebrow{font-size:9px;letter-spacing:5px;color:rgba(255,255,255,0.18);text-transform:uppercase;margin-bottom:4px;}
 .day-title{font-size:17px;font-weight:700;letter-spacing:-0.3px;line-height:1.2;}
 .week-pill{display:flex;align-items:center;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:100px;padding:3px 4px;flex-shrink:0;gap:2px;}
 .week-btn{width:26px;height:26px;border-radius:50%;border:none;background:transparent;color:rgba(255,255,255,0.18);font-size:15px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
 .week-btn.active{background:rgba(255,255,255,0.08);color:#fff;}
 .week-label{text-align:center;min-width:56px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.5px;}
-
-/* Day tabs */
 .day-tabs{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px;margin-bottom:12px;}
 .day-tab{flex-shrink:0;padding:5px 13px;border-radius:100px;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;letter-spacing:0.3px;}
-
-/* Progress */
 .progress-row{display:flex;align-items:center;gap:10px;}
 .progress-bar{flex:1;height:1.5px;background:rgba(255,255,255,0.06);border-radius:100px;overflow:hidden;}
 .progress-fill{height:100%;border-radius:100px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1);}
 .progress-label{font-size:10px;font-weight:700;letter-spacing:0.5px;}
-
-/* Legend */
+.abmode{display:flex;gap:6px;padding:12px 20px 0;}
+.abmode-btn{flex:1;padding:8px;border-radius:9px;font-size:11px;font-weight:700;letter-spacing:1px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:rgba(255,255,255,0.3);transition:all 0.2s;}
 .legend{display:flex;gap:14px;padding:12px 20px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.04);}
 .legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.3px;}
 .legend-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-
-/* Exercise list */
-.exercises{padding:16px 16px 8px;}
-.section-label{font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.18);text-transform:uppercase;margin-bottom:12px;}
+.block-label{font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.22);text-transform:uppercase;margin:20px 4px 10px;display:flex;align-items:center;gap:8px;}
+.block-label span.t{color:rgba(255,255,255,0.3);}
+.block-note{font-size:11px;color:rgba(255,255,255,0.3);line-height:1.5;margin:0 4px 12px;padding:9px 12px;background:rgba(255,255,255,0.03);border-radius:9px;border:1px solid rgba(255,255,255,0.05);}
+.exercises{padding:4px 16px 8px;}
 .ex-list{display:flex;flex-direction:column;gap:6px;}
-
 .ex-card{border-radius:14px;overflow:hidden;transition:background 0.2s, border-color 0.2s;}
-.ex-row{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;}
-
-.ex-dot{display:none;}
-
+.ex-row{display:flex;align-items:center;gap:12px;padding:10px 12px;cursor:pointer;}
+.ex-thumb{width:52px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0;background:#151519;border:1px solid rgba(255,255,255,0.06);}
+.ex-thumb-ph{width:52px;height:52px;border-radius:10px;flex-shrink:0;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;font-size:20px;}
 .ex-info{flex:1;min-width:0;}
 .ex-name{font-size:14px;font-weight:600;color:#eee;letter-spacing:-0.2px;}
 .ex-name.done{color:rgba(255,255,255,0.25);text-decoration:line-through;}
@@ -59,449 +49,519 @@ button{font-family:inherit;cursor:pointer;}
 .ex-tags{display:flex;gap:5px;margin-top:6px;align-items:center;flex-wrap:wrap;}
 .ex-sets{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;}
 .equip-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:100px;}
-.ex-suggested{font-size:10px;color:rgba(255,255,255,0.3);}
-
+.ex-last{font-size:10px;font-weight:700;}
 .check-btn{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;font-size:12px;font-weight:900;border:1.5px solid;}
-
-/* Expanded */
 .ex-expanded{padding:0 14px 14px;}
-.ex-desc{font-size:12.5px;line-height:1.7;color:rgba(255,255,255,0.45);margin:0 0 10px;}
-
-.video-btn{display:flex;align-items:center;gap:10px;background:rgba(255,40,40,0.07);border:1px solid rgba(255,40,40,0.18);border-radius:10px;padding:10px 13px;margin-bottom:12px;cursor:pointer;transition:background 0.15s;width:100%;}
-.video-btn:hover{background:rgba(255,40,40,0.13);}
-.video-play{width:28px;height:28px;border-radius:50%;background:rgba(255,50,50,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:#ff6b6b;font-weight:900;}
-.video-info{flex:1;text-align:left;}
-.video-label{font-size:12px;font-weight:600;color:#ff7070;}
-.video-sub{font-size:10px;color:rgba(255,255,255,0.25);margin-top:1px;}
-
+.ex-desc{font-size:12.5px;line-height:1.7;color:rgba(255,255,255,0.45);margin:2px 0 12px;}
 .stats-row{display:flex;background:rgba(255,255,255,0.03);border-radius:10px;overflow:hidden;margin-bottom:10px;border:1px solid rgba(255,255,255,0.05);}
 .stat{flex:1;text-align:center;padding:10px 4px;}
 .stat-val{font-size:17px;font-weight:800;}
 .stat-lbl{font-size:8px;color:rgba(255,255,255,0.22);letter-spacing:1.5px;margin-top:2px;text-transform:uppercase;}
-
 .weight-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:12px 14px;}
-.weight-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.weight-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;}
 .weight-lbl{font-size:9px;letter-spacing:3px;color:rgba(255,255,255,0.25);text-transform:uppercase;}
-.weight-suggested{font-size:11px;font-weight:700;}
-.prog-dots{display:flex;gap:4px;margin-bottom:11px;overflow-x:auto;padding-bottom:2px;}
-.prog-dot{flex-shrink:0;text-align:center;cursor:pointer;}
-.prog-dot-inner{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;transition:all 0.15s;}
-.prog-dot-lbl{font-size:7px;color:rgba(255,255,255,0.18);margin-top:3px;letter-spacing:0.5px;}
-.weight-input-wrap{position:relative;}
-.weight-input{width:100%;background:rgba(255,255,255,0.05);border-radius:9px;padding:10px 50px 10px 13px;color:#fff;font-size:14px;outline:none;transition:border-color 0.2s;font-family:inherit;}
-.weight-unit{position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:11px;color:rgba(255,255,255,0.25);pointer-events:none;}
-.weight-feedback{margin-top:7px;font-size:11px;line-height:1.4;}
-.notes-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:9px;padding:10px 13px;color:#fff;font-size:13px;outline:none;font-family:inherit;}
-
-/* Cardio */
-.cardio-section{padding:12px 16px 60px;}
+.weight-last{font-size:11px;font-weight:700;}
+.hist-row{display:flex;gap:6px;margin-bottom:11px;overflow-x:auto;padding-bottom:2px;}
+.hist-cell{flex-shrink:0;text-align:center;}
+.hist-inner{min-width:36px;height:34px;padding:0 6px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
+.hist-date{font-size:7px;color:rgba(255,255,255,0.2);margin-top:3px;letter-spacing:0.3px;}
+.set-inputs{display:flex;flex-direction:column;gap:7px;}
+.set-line{display:flex;align-items:center;gap:8px;}
+.set-num{font-size:11px;color:rgba(255,255,255,0.3);width:22px;font-weight:700;}
+.set-in{width:74px;background:rgba(255,255,255,0.05);border-radius:8px;padding:9px 11px;color:#fff;font-size:14px;outline:none;border:1px solid rgba(255,255,255,0.07);transition:border-color 0.2s;}
+.set-x{color:rgba(255,255,255,0.25);}
+.set-check{margin-left:auto;width:34px;height:34px;border-radius:8px;border:1.5px solid rgba(255,255,255,0.1);background:transparent;font-size:13px;font-weight:900;color:transparent;transition:all 0.2s;}
+.note-line{font-size:11px;line-height:1.5;margin-top:9px;color:rgba(255,255,255,0.35);}
+.cardio-section{padding:8px 16px 70px;}
 .cardio-card{border-radius:14px;padding:16px;}
 .cardio-title{font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.25);text-transform:uppercase;margin-bottom:10px;}
-.cardio-text{font-size:13px;line-height:1.75;color:rgba(255,255,255,0.5);}
+.cardio-text{font-size:13px;line-height:1.75;color:rgba(255,255,255,0.55);}
 .cardio-note{font-size:11px;color:rgba(255,255,255,0.28);margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);line-height:1.5;}
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(12,12,16,0.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid rgba(255,255,255,0.06);display:flex;z-index:100;}
+.tab{flex:1;padding:11px 0 20px;background:none;border:none;color:rgba(255,255,255,0.3);font-size:10px;font-weight:600;letter-spacing:0.5px;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.tab.on{color:#fff;}
+.tab-ico{font-size:18px;}
+.food-wrap{padding:20px 20px 90px;}
+.food-h{font-size:22px;font-weight:800;letter-spacing:-0.5px;margin-bottom:6px;}
+.food-sub{font-size:12.5px;color:rgba(255,255,255,0.4);line-height:1.6;margin-bottom:20px;}
+.hand-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:22px;}
+.hand-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:13px;}
+.hand-emoji{font-size:20px;margin-bottom:6px;}
+.hand-name{font-size:13px;font-weight:700;color:#eee;}
+.hand-portion{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;}
+.meal-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:14px;margin-bottom:10px;}
+.meal-top{display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.meal-name{font-size:15px;font-weight:700;}
+.meal-macros{font-size:11px;color:rgba(255,255,255,0.35);margin-top:3px;}
+.meal-opts{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);font-size:12px;line-height:1.9;color:rgba(255,255,255,0.5);}
+.meal-opts b{color:#eee;font-weight:600;}
+.prot-track{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px;margin-top:6px;}
+.prot-dots{display:flex;gap:10px;margin-top:12px;}
+.prot-dot{width:44px;height:44px;border-radius:50%;border:2px solid;background:transparent;font-size:18px;font-weight:900;transition:all 0.2s;}
+.bw-row{display:flex;gap:8px;margin-top:14px;}
+.bw-in{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:9px;padding:11px 13px;color:#fff;font-size:15px;outline:none;}
+.bw-save{background:#f0f0f0;color:#0c0c10;border:none;border-radius:9px;padding:0 18px;font-weight:700;}
+.prog-wrap{padding:20px 20px 90px;}
+.prog-ex{margin-bottom:8px;padding:12px 0;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;}
+.prog-nm{font-size:13.5px;flex:1;padding-right:12px;}
+.prog-dt{color:rgba(255,255,255,0.3);font-size:11px;}
+.prog-vl{font-size:13px;font-weight:700;}
+.empty{font-size:13px;color:rgba(255,255,255,0.35);line-height:1.6;padding:20px 0;}
 </style>
 </head>
 <body>
-
 <div class="glow" id="glow"></div>
-
-<div class="header">
-  <div class="header-top">
-    <div class="header-left">
-      <div class="eyebrow">Mi Rutina · 5 Días</div>
-      <div class="day-title" id="dayTitle"></div>
-    </div>
-    <div class="week-pill">
-      <button class="week-btn" id="weekPrev" onclick="changeWeek(-1)">‹</button>
-      <div class="week-label" id="weekLabel"></div>
-      <button class="week-btn active" onclick="changeWeek(1)">›</button>
-    </div>
-  </div>
-  <div class="day-tabs" id="dayTabs"></div>
-  <div class="progress-row">
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <span class="progress-label" id="progressLabel"></span>
-  </div>
-</div>
-
-<div class="legend">
-  <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div>Máquina</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#fb923c"></div>Mancuernas</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div>Polea</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div>Peso corporal</div>
-</div>
-
-<div id="phaseBanner" style="margin:10px 16px 0;border-radius:12px;padding:11px 14px;border:1px solid;transition:all 0.4s;">
-  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-    <div id="phaseLabel" style="font-size:9px;font-weight:800;letter-spacing:3px;"></div>
-  </div>
-  <div id="phaseTip" style="font-size:12px;line-height:1.6;color:rgba(255,255,255,0.45);"></div>
-</div>
-
-<div class="exercises">
-  <div class="section-label">Fuerza · 30 min</div>
-  <div class="ex-list" id="exList"></div>
-</div>
-
-<div class="cardio-section">
-  <div class="cardio-card" id="cardioCard">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-      <div class="cardio-title" style="margin-bottom:0">Cardio · 30 min</div>
-      <button id="cardioDoneBtn" onclick="toggleCardio()" style="width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.1);background:transparent;color:transparent;font-size:12px;font-weight:900;cursor:pointer;transition:all 0.2s;flex-shrink:0;">✓</button>
-    </div>
-    <div class="cardio-text" id="cardioText"></div>
-    <div class="cardio-note" id="cardioNote"></div>
-  </div>
-</div>
-
+<div id="app"></div>
+<div class="tabbar" id="tabbar"></div>
 <script>
-const equipStyles = {
-  maquina:    {label:"Máquina",    color:"#60a5fa", bg:"rgba(96,165,250,0.1)",  dot:"#60a5fa"},
-  mancuernas: {label:"Mancuernas", color:"#fb923c", bg:"rgba(251,146,60,0.1)",  dot:"#fb923c"},
-  polea:      {label:"Polea",      color:"#a78bfa", bg:"rgba(167,139,250,0.1)", dot:"#a78bfa"},
-  libre:      {label:"Libre",      color:"#4ade80", bg:"rgba(74,222,128,0.1)",  dot:"#4ade80"},
+const THUMBS={"cinta":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAwICQsJCAwLCgsODQwOEh4UEhEREiUbHBYeLCcuLisnKyoxN0Y7MTRCNCorPVM+QkhKTk9OLztWXFVMW0ZNTkv/2wBDAQ0ODhIQEiQUFCRLMisyS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0v/wAARCACAAIADASIAAhEBAxEB/8QAGwABAAMBAQEBAAAAAAAAAAAAAAEEBQMGAgf/xAA0EAACAgIABAQDBgUFAAAAAAAAAQIDBBEFEiExE1FhcSJBkQYUMnKBoSMzUrHwNUNiY9H/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAZEQEBAQEBAQAAAAAAAAAAAAAAARECMUH/2gAMAwEAAhEDEQA/APzIAFAAAAAAAAAAAAAAAAAAAAAALHDqK8nMqptk4xm9bXnrp+5XJhOVc4zi9Si017oDfo4Tj2dY4eTcu3wz+ZzyeE1QnKKxr6ZafKpy3o2uG5UKrpWtrwpuN0Ip9W9b+ndbOXGLa+I505UW/ddrcoSXMnLXV737GJetyxrJmyvHNaen3QLHEKvCypraafVNdmVzbIAAAAAAAAAAAAAAADZ4fm1fcfDufx09IrpuUX7+T2d5X8mPC/kXhzk4r41va9EjvQuEVY0XjxnC5LXPbFvm9Wv/AA5+Nz1uujJx5RcubSmo6etfMgzcyVWXdXzWKhJNOU4tr+xQtrnVNxmtP+/qb1k+JwjJ7sdaW3yzi1r9WZ8rXen4sFKe+inBdF+mhFufGeDVhj1zX+n7/Je0/o2T9xxm/jxsylfOTknFfroqMkH1byKyXhOThvpzdz5AAAAAAAAAHTGplk5FVMFuVklFfqzmafAocttuU/8AZhqH5pdP2W2Ba4jZHH5/CcXFPUWuzRnQy6H/ADMWD9ieJW801BdkUgNB+FkLlx6vCh08R7fX00csuWo8vmWKIeDjpPvrbM+6fPY2QfKnKPaUl7M+pX2zhyysm4+TZ8AoAAAAAAAAAAAbWOvu3D64Nac92S9d9v2/uZOPX410K/6n19jerlCWXCU480K5J8m++n2FFGvgXFMybnXh26fZz+FfuXqfshn1p25TqrhHrpS5mz2uNlLMr8SmW/NfNP1MrOycy1TrhRypdG5EHl8rDyZxlCit2vTfwddpd9GKetxqrqMjnclF7+TLeZwnD4lNTuqVVj/FdQ+r94vowPDg9NkfY+XfE4hTPyjdF1v69UZmX9nuK4icrMKyUP66/jj9UJ1KuVmASTi9STT8mtMFQAAAAAAAB1xrfBuU9pdGXaMqqxbbcZP5MzCAPQY+TdU+fHua9YyNTG+0d9a5Mimu6PrHr9TxcXKD3CTi/NMs18Quj0mo2L1XX6kHtFxHh2U9/FRN/J9UW6sfxFumyE/aWmeIhnUWdJc1b9eqLdVtkPiot6ecJAershbV0nGUfzI5xunU9wcoPzg9GPj/AGizcZcs5KyPzjItV8fwb3/Hg6ZP5rsTN9Fy7JjkLlyqqchf9tab+vRmXl8L4Zb1rx7KZPv4dnT6Mu22Ysq/EhkQlF9v8Rm3ZEl+FKC85Pq/0GSeLqhdwSK60ZS9rY8r+vYz8rDuxGlbFafZxe0zTsyoNPnbs93pGZfkuyrw4y/hqT0v89yo4AgkoAACASQAI0SAI0I80HuEnF+jJAHeGdclqxRsj/yXU6KVF66N1vy3tFQjRBctjGmlQjYm5S3Jp6OVmXL8MV26bfU4OOyOUBKcpv4nsInROigiSCQAAAAAAQSAAAAEEgCASAIBIAAAD//Z","escaladora":"data:image/jpeg;base64,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","prensa":"data:image/jpeg;base64,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","extension":"data:image/jpeg;base64,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","femoral":"data:image/jpeg;base64,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","aductor":"data:image/jpeg;base64,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","abductor":"data:image/jpeg;base64,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","gluteo":"data:image/jpeg;base64,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","pulldown":"data:image/jpeg;base64,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","remo":"data:image/jpeg;base64,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","asistida":"data:image/jpeg;base64,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","lumbar":"data:image/jpeg;base64,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","presshombro1":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAwICQsJCAwLCgsODQwOEh4UEhEREiUbHBYeLCcuLisnKyoxN0Y7MTRCNCorPVM+QkhKTk9OLztWXFVMW0ZNTkv/2wBDAQ0ODhIQEiQUFCRLMisyS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0v/wAARCACAAIADASIAAhEBAxEB/8QAGwABAAMBAQEBAAAAAAAAAAAAAAEEBQMCBgf/xAA1EAACAgECAwUFBgcBAAAAAAABAgADEQQhEjFRBRNBYXEiM4GRwSMyNDVCchQVJIKhsdFS/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAEC/8QAFxEBAQEBAAAAAAAAAAAAAAAAAAERIf/aAAwDAQACEQMRAD8A/MoiJQiIgIiICIiAiIgIiICIiAiIgIiICaNfY97aRNSbKhW4yAHBYDzEzpsl3Xs7St5HHwgU/wCXMR7L5/tInF9JapOBnEsWal1GXxjGcyGexkVlxwscAjrJoq00m088Lyz9BO7JpU2YknyM8350691ycDfHhnf/ADK0osGmp/dWEHo3/ZwdGrbhcEHzm3ouyKTQj3cZdhkgNjEjXaOukKFyU5lW3x6dIGZRp1etrLWKjfhA5t5+k5/w9hsZEQsV543lnUEooAHCTjI6DwEsC7S6eqxsi618ZBXavy6k/wCIGa9FqDL1Oo6lZ4ll9UHTh4R64AlaAiIgIiICar/lWl9G/wBzKmqSD2XphvkZ/wBxRS1YHcnH/kTtpkB0vHwZNYyTnbHKddPox2heun76ugFd3tbCjE5M54e7rY92dsDk3nIKJJYkk5JnqtS9iKoySQAOs9ig5wWHwEudnaXh1y5Oe79rl8pRtK+qBwaKsdQ5lHXa16X4+HgdcDAbO/T6/KaN1pqpLKvE3IDzMxtUoZlDKHIySSPHxMggVpfrK6SCi2En2TuJU1lYossqDFhnIJ588S3TTa9yg8SZ2D5G3ylTXoUuALcRxz+JgVoiJQiIgIiICaa/l1PqZmTST8vp9T9Yor6ofYP6T3UPslPlI1Q/p39J7q9yv7ZBTNth/UfhNrseo16fvGzxWHO/TwmJUhttRB+ogT6ZQFUKBgAYEotJqrKabURsLYuGGOYnzWtvdbsKRsB4TZubFbekwNcc6l/LaQWuz9XbZqUSxsjOeU4dokHUbHfBzt5mR2ccatT5Gedac3/CUcIiICIiAiIgJop+Aq9f+zOmhX+Ar9T9YHPVe4f0nqjPcISMZXpPRUN7JGQZ67+3UJWbXLlEFa58FGwEz3VV+zFzq1J/SCZt8Uxa9PqKSLU4cjwzmWqtazAh0CsB4nGZUXLmyAOpmDc3HYzdSTLmp1zAsgXDDbnylJ0ZAvEMZEo66HbUD0MjV+++Ak6L3/wM86r3v9ogcoiICIiAiJECZfq/Ap+6Z8vVH+iX90CWcIOJuQ3MUWhNPkgEEZ3nK9ga2BOMieEZDSK+LfGOUguVavvlHsKJIUFQ7rwgsRjPSZ1LmlwDkHlvtLVrZDOCcBCAM7ZO0Dhc9b38dakJkHBnbV312oOHmD0k6OlGqLOoYk4nl9KAr8PE7sRwAD5yjno/ffCedSftfgJ1SiyjLPwg4+7nJnHUbuDkHIHKBzkyIgTERASJMiAnRb3WvgGOHOeU5yIHp7GfnJS6xPutt0O88RA0NLrL7mWpkV0J3JXIUdZctq0lljq5C1DGOA7k9Rj1lNu0eKgVovd4545H5Sm9zttxez0AxILjjTULitrMk/eZvoJWOox93ibzYzhiJR7ax35tt0G085OMZ2iICIiBMREBERAiJMQIiTECIkxAiJMQIiTEBERAREQP/9k=","presshombro2":"data:image/jpeg;base64,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","laterales":"data:image/jpeg;base64,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","presspecho":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAwICQsJCAwLCgsODQwOEh4UEhEREiUbHBYeLCcuLisnKyoxN0Y7MTRCNCorPVM+QkhKTk9OLztWXFVMW0ZNTkv/2wBDAQ0ODhIQEiQUFCRLMisyS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0v/wAARCACAAIADASIAAhEBAxEB/8QAGwABAAMBAQEBAAAAAAAAAAAAAAEDBAIFBgf/xAA4EAACAgEBAwcKBQUBAAAAAAAAAQIDEQQSITEFEyI0UXHBFCMzQWFicoGRoVKCsdHwBiQyQuFD/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAEC/8QAFxEBAQEBAAAAAAAAAAAAAAAAAAERQf/aAAwDAQACEQMRAD8A/MgAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0cnqD1danHai87vkBRGEpvEYuT9iyWeTX4zzNmPgZ9HTHT1PNcXFvvLJTr47Uu5MaPlJRlB4knF9jWCD39fyjKfJ92nzmDbW+Cznv4ngAAAAAAA08nV6ezUNavneaUJPzTSln1cfUZi/SbldLsrYFAAA97+nK4rT32SintSUVldi/wClvLdMa9JGeamrE2lBpuPevUc8m+Z0FcfXLpP5mXXJzjNLGX2vBB5BfoOt197/AEKZRcXiSwy3RPGqg/5wKPT5bnKFE3GTTcksrcdUSlPS1Tkm2nX01Jbs53Ne3wKeXGnp5NPK20bOTVpo6CTu25Wzrjzcf9Ytev2szVjBqOqXvd/n8+J5p6N/UrX7/iecaiAAAAAAaNOl5NqZbUU8JYb3vuM5phFLQyeN7k/ADMdVw5yyMPxNI5L9As6uv2PIHt8IpLgjFrm1XOSeGuD+Ztbws4zg8/XWOyhycYxbxuisIgx39KMZ4xlZI0rxfFnVvoK+5eJxp/Soo2cqvOkXxI00N+S17ONrYWM9uDFyk86SPxI2UPzFfwogy6jqz+J+BhNuo6r+Z/qYigAAAAAGmb2dDBduX9/+GY0X7qaV7if3YGdLLwt7NcNHrdMo6h6ayMFvzKOExpdYtPViHOQm30pReMoslrLLf/W5p9s2wNNOsjfGWIuMorLyYdZdtN1JboveXaWMZqc0n0U089rMuprkrJTa3Sk3kgslW7KK0sLo8WcVVSjZl7OF2STO7JyhRU4vHROKbHOeHgot18ZT0mYxk4xknJpbl3mmmXmoL3UVK+2uDphZKNd7UbIp7pLjhkwezFL2GZuqrv6r8/ExGy/qq7/ExmkAAAAAA1Rir9MvxwWx98x8V9DKW6WzYuSabjLoyS7P5vAqOoS2WX6nTyVjacW84e/GX2rv4lcNPNy6acIri2gNdFmzXY+EG19f4jNqbdvZjFppL6l1cJ6l8xpoOTx0Y9vtbOnyZzXWtZp6fdjLnJfSP7kFF3oKvhRXR6T5F8btLGzFsZ21QWI4lsOXfxwV6jUVWW7VFCqTfBSbx9QLZekq+LwO1wRRKajKtyeEnx+RYnuROiL+qrvMhqvf9rHvMhoSAAAAAgmM3CSlF4a4NAgDVTrp7XnWsduN51bfTY+k5JLPB7mYyMAX13VQlhwzB8VnD+polp9HbHaq1U63+GyKl91+xgGANPkkc7tTW/yy/Y6ekqgtqWoi2vVFfuZd+MZeCMAWWT7J59mDuu1NdJpFGBgg03WRdEYqSbzwM5BJQJAAAAAAAAAAEEgCASAIBIAAAAAAP//Z","pecdeck":"data:image/jpeg;base64,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","biceps":"data:image/jpeg;base64,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","functional":"data:image/jpeg;base64,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","exttriceps":"data:image/jpeg;base64,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","crunch":"data:image/jpeg;base64,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","captains":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAwICQsJCAwLCgsODQwOEh4UEhEREiUbHBYeLCcuLisnKyoxN0Y7MTRCNCorPVM+QkhKTk9OLztWXFVMW0ZNTkv/2wBDAQ0ODhIQEiQUFCRLMisyS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0v/wAARCACAAIADASIAAhEBAxEB/8QAGwABAAMBAQEBAAAAAAAAAAAAAAIDBAUBBgf/xAAzEAACAgIABAMHAwIHAAAAAAAAAQIDBBEFEiExQVFxEyIyYYGRsRQjUjTRBkJicoLB8P/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFREBAQAAAAAAAAAAAAAAAAAAAAH/2gAMAwEAAhEDEQA/APzIAFAAAAAur0urYAE402yeo1Tf/Fl9PDcu7fJV285JflgZQb58Gzq4c06klvXxozX4l+PBTshqLetpp9QKQAAAAAAAAAAAAA04eZLGfRJLxlGK5vuZgBvnxNysUuToumpSbPLL7pQbosXs13gorcf7mEtxXq+HzehRL9Ze2m7NtdtpEp5Esivkm0uvN0WupTfFQunFdkxQk7oJ9m9MCHYFuVDkvnHy/sVAAAAAAAAAAAAAAAnQ9XVv/UvyQPYPU4vyaAuzVrKs+n4K6el1f+5fk05lNludOFUJTlreorZTKi6icHbVOHvL4loCWetZU/RfgzmriS1ly9EZQAAAAAAAAAAAA9rhOyahXCU5vtGK239CyOPc2tUzfy5WBpqw1fi48K4xV9jsm5uT+CPTWvXZltosp+JdN90dHLzY/qo5FePXTXFaqqjJtQTXVffZktyf1G1ZFJN791gfScNxI1qWROEldbvTb6cnp6+Jz/8AELlJVxgm9Pb0bcvi+75QxcayWPVXCFbfWaio+Oji5OZ+pu5+WUXHvHxZBRxP+p35xRlNfEmpXQcd65eifgtsyFAAAAAAAAAAATptsosVlNk67I9pQk019SO5SaW22/meGnh1anlw38MPef0A94glCcaV2rjr6jI4hbda7I100b17tNailpa6FF9ntbpz/k9lmBX7XLqi+3Nt+i6gdyjJx8O2ftZqEmk9fk43EclZGTKdfb8kc+z2mVOXzM4F+XDk9n4px2mUGq79zBpn4wfK/wD30MoAAAAAAAAAAADZi/tYeRd4y9yJjOhKiU8emiMoxeueTk/MDnnQ4THTttfglFfULDwqv6jMlJ/xqh/2y+yVFNFccaMlCx8y53t9u/4A5dz3bJ/MgaqsDLypN049kk331pfd9Cy/hduPGLuuoi3/AJVZtr7AV4/v4l9fkuZGU24tcKret1clL3Wl8zHKLjJxfdPQHgAAAAAAAAAAnRX7W6EP5Pr6FmbZz5M9Pouhdh3YVNLlZC95PXUotcmvTvsxyabb69X4gIRc5xiu8no6V+Y8bI5akm4RUV8jNw6tzyFPT5YLbevsUWydls56fV7A0X8Syr/jtevJMyyk5PbbfqeACVTasjrvstza5QyZ7i1ze91XmUqTT2ujR7ZZO17snKT829gRAAAAAAAAAAAAAaMXOyMNWLHtcFYtSSXcztuTbb22AAAAAAAAAAAAH//Z"};
+
+const EQUIP={
+  maquina:{label:"Máquina",color:"#60a5fa",bg:"rgba(96,165,250,0.1)",dot:"#60a5fa"},
+  polea:{label:"Polea",color:"#a78bfa",bg:"rgba(167,139,250,0.1)",dot:"#a78bfa"},
+  libre:{label:"Peso corporal",color:"#4ade80",bg:"rgba(74,222,128,0.1)",dot:"#4ade80"},
+  cardio:{label:"Cardio",color:"#fbbf24",bg:"rgba(251,191,36,0.1)",dot:"#fbbf24"},
 };
 
-const weightConfig = {
-  "Press de Hombro":           {base:10, inc:5,   unit:"kg"},
-  "Elevaciones Laterales":     {base:3,  inc:1,   unit:"kg c/u"},
-  "Elevaciones Frontales":     {base:3,  inc:1,   unit:"kg c/u"},
-  "Tríceps en Polea":          {base:10, inc:5,   unit:"kg"},
-  "Press Francés":             {base:4,  inc:1,   unit:"kg c/u"},
-  "Abdomen Máquina":           {base:10, inc:5,   unit:"kg"},
-  "Hip Thrust":                {base:10, inc:2,   unit:"kg"},
-  "Peso Muerto Rumano":        {base:8,  inc:2,   unit:"kg c/u"},
-  "Hip Thrust Unilateral":     {base:8,  inc:2,   unit:"kg"},
-  "Peso Muerto Una Pierna":    {base:6,  inc:2,   unit:"kg c/u"},
-  "Sentadilla Goblet":         {base:8,  inc:2,   unit:"kg"},
-  "Sentadilla Sumo":           {base:10, inc:2,   unit:"kg"},
-  "Patada de Glúteo":          {base:10, inc:5,   unit:"kg"},
-  "Abducción de Cadera":       {base:10, inc:5,   unit:"kg"},
-  "Jalón al Pecho":            {base:20, inc:5,   unit:"kg"},
-  "Remo con Mancuerna":        {base:8,  inc:2,   unit:"kg c/u"},
-  "Remo en Polea":             {base:10, inc:5,   unit:"kg"},
-  "Curl Bíceps":               {base:4,  inc:1,   unit:"kg c/u"},
-  "Curl Martillo":             {base:4,  inc:1,   unit:"kg c/u"},
-  "Curl Concentrado":          {base:4,  inc:1,   unit:"kg c/u"},
-  "Curl Predicador":           {base:10, inc:5,   unit:"kg"},
-  "Tríceps Barra V":           {base:10, inc:5,   unit:"kg"},
-  "Russian Twist":             {base:4,  inc:1,   unit:"kg"},
-  "Extensión Cuádriceps":      {base:10, inc:5,   unit:"kg"},
-};
+function ex(o){return Object.assign({equip:"maquina",sets:3,reps:"12",peso:true,rest:60},o);}
 
-function getPhase(week) {
-  if(week <= 2) return {
-    label: "Adaptacion",
-    color: "#4ade80",
-    tip: "Termina cada serie sintiendo que podrias hacer 3-4 reps mas. El objetivo es aprender los movimientos, no llegar al limite."
-  };
-  if(week === 9) return {
-    label: "Semana de choque",
-    color: "#f87171",
-    tip: "Esta semana aprietas al maximo: una serie mas en cada ejercicio, 30 segundos menos de descanso, y 10 min extra de cardio. Es incomodo, es intencional."
-  };
-  if(week >= 10) return {
-    label: "Consolidacion",
-    color: "#fb923c",
-    tip: "Volviste al ritmo normal despues del choque. El cuerpo ya asimilo el estimulo y ahora construye sobre eso."
-  };
-  return {
-    label: "Progresion",
-    color: "#60a5fa",
-    tip: "Ya pasaste la adaptacion. Ahora si podes empujar. Llega cerca del limite en cada serie."
-  };
-}
+const DAYS=[
+{id:1,label:"Lun",title:"Inferior A · Glúteo y femoral",color:"#f472b6",dur:"70 min",
+ blocks:[
+  {name:"Calentar",time:"8 min",items:[
+    ex({id:"c-esc1",thumb:"escaladora",name:"Escaladora suave",target:"Entrada en calor",equip:"cardio",sets:1,reps:"5 min",peso:false,rest:0,desc:"Los escalones que giran solos. Nivel bajo, solo para entrar en calor."}),
+    ex({id:"c-abd1",thumb:"abductor",name:"Abductor sin peso",target:"Glúteo medio · activación",sets:2,reps:"20",peso:false,rest:30,desc:"Sentada, rodillas contra las almohadillas, abrís las piernas hacia afuera. Sin peso, para despertar el glúteo."}),
+  ]},
+  {name:"Máquinas",time:"35 min",note:"Bajás en 3 segundos, subís explosiva. Terminá con 2 reps en reserva (en la última serie, 1).",items:[
+    ex({id:"prensa",thumb:"prensa",name:"Prensa de piernas",target:"Cuádriceps · glúteo",sets:4,reps:"8–10",rest:90,desc:"Te sentás reclinada y empujás la plataforma con los pies a la altura de los hombros. No bloquees la rodilla arriba."}),
+    ex({id:"gluteo",thumb:"gluteo",name:"Máquina de glúteos",target:"Glúteo mayor",sets:4,reps:"12 c/u",rest:75,desc:"Apoyás el antebrazo y empujás con una pierna hacia atrás contra la plataforma acolchada. Apretá arriba."}),
+    ex({id:"femoral",thumb:"femoral",name:"Femoral sentado",target:"Isquiotibiales",sets:4,reps:"10–12",rest:75,desc:"Sentada, el rodillo sobre la parte baja de la pierna, empujás hacia abajo y atrás."}),
+    ex({id:"abductor",thumb:"abductor",name:"Abductor",target:"Glúteo medio",sets:3,reps:"20",rest:60,desc:"Con peso ahora, y pausa de 2 segundos en el punto de máxima apertura."}),
+    ex({id:"crunch1",thumb:"crunch",name:"Abdominal crunch",target:"Recto abdominal",sets:3,reps:"15",rest:45,desc:"Sentada, agarrás las manijas de arriba y flexionás el tronco. Peso liviano, la panza plana no se construye cargando."}),
+  ]},
+  {name:"Suelo",time:"12 min",items:[
+    ex({id:"zancadas",thumb:null,name:"Zancadas caminando",target:"Glúteo · cuádriceps",equip:"libre",sets:3,reps:"12 c/u",peso:false,rest:60,desc:"Paso largo al frente, bajás la rodilla de atrás casi al suelo, empujás con el talón de adelante. Alternás piernas caminando."}),
+    ex({id:"plancha1",thumb:null,name:"Plancha",target:"Transverso · la que aplana",equip:"libre",sets:3,reps:"40 seg",peso:false,rest:45,desc:"Antebrazos y puntas de pie, cadera en línea con los hombros. Si se hunde la lumbar, cortá la serie."}),
+  ]},
+ ],
+ cardio:{text:"5 min escaladora → 10 min cinta. Ritmo conversacional: tenés que poder hablar.",note:""}},
 
-function getCardio(dayId, week) {
-  const sm = Math.min(10 + Math.floor((week-1)/2)*5, 30);
-  const rest = 30 - sm;
-  const note = sm < 30
-    ? `Progresion escaladora: arrancas con ${sm} min. Sube 5 min cada 2 semanas hasta llegar a 30.`
-    : `Ya llegaste a los 30 min completos de escaladora.`;
+{id:2,label:"Mar",title:"Superior A · Tirón y bíceps",color:"#38bdf8",dur:"70 min",
+ blocks:[
+  {name:"Calentar",time:"6 min",items:[
+    ex({id:"c-cin2",thumb:"cinta",name:"Cinta suave",target:"Entrada en calor",equip:"cardio",sets:1,reps:"4 min",peso:false,rest:0,desc:"Caminata sin inclinación."}),
+    ex({id:"c-remo2",thumb:"remo",name:"Remo sentado ligero",target:"Espalda · activación",sets:2,reps:"15",peso:true,rest:30,desc:"Peso muy bajo, para despertar la espalda antes del bloque pesado."}),
+  ]},
+  {name:"Máquinas",time:"38 min",note:"Tirás con los codos, no con las manos. Pecho arriba, RIR 2.",items:[
+    ex({id:"pulldown",thumb:"pulldown",name:"Lat pulldown divergente",target:"Dorsales",sets:4,reps:"8–10",rest:90,desc:"Sentada bajo la barra alta, trabás los muslos y bajás la barra hasta el pecho. No más abajo del mentón."}),
+    ex({id:"remo2",thumb:"remo",name:"Remo sentado divergente",target:"Espalda media",sets:4,reps:"10",rest:75,desc:"Sentada frente a las manijas, tirás hacia el abdomen juntando los omóplatos. Espalda recta."}),
+    ex({id:"dominadas",thumb:"asistida",name:"Dominadas asistidas",target:"Dorsales",sets:3,reps:"6–10",rest:75,desc:"Barra de arriba de la torre. Te arrodillás en la plataforma que ayuda. Ojo: más peso en la máquina = más ayuda.",rir_inv:false}),
+    ex({id:"biceps2",thumb:"biceps",name:"Máquina de bíceps",target:"Bíceps",sets:4,reps:"12",rest:60,desc:"Apoyás la parte de atrás de los brazos sobre la plataforma inclinada y flexionás.",rot:"A"}),
+    ex({id:"triceps2",thumb:"functional",name:"Tríceps en polea",target:"Tríceps",equip:"polea",sets:3,reps:"15",rest:60,desc:"Functional trainer (torre azul), polea arriba del todo. Codos pegados al cuerpo, estirás hacia abajo.",rot:"A"}),
+    ex({id:"exttri2",thumb:"exttriceps",name:"Extensión de tríceps",target:"Tríceps",sets:3,reps:"15",rest:60,desc:"Máquina específica: estirás los brazos contra la resistencia.",rot:"B"}),
+    ex({id:"crunch2",thumb:"crunch",name:"Abdominal crunch",target:"Recto abdominal",sets:3,reps:"15",rest:45,desc:"Peso liviano, 15–20 reps siempre. Cuando salga fácil, subí reps antes que kilos."}),
+  ]},
+  {name:"Suelo",time:"5 min",items:[
+    ex({id:"planchalat2",thumb:null,name:"Plancha lateral",target:"Core · oblicuos",equip:"libre",sets:3,reps:"30 seg c/u",peso:false,rest:30,desc:"De costado sobre un antebrazo, cadera arriba y firme. Cambiás de lado."}),
+  ]},
+ ],
+ cardio:{text:"5 min escaladora → 10 min cinta → 5 min escaladora.",note:""}},
 
-  const map = {
-    1: {
-      text: `${sm} min escaladora (StairMaster) ritmo constante + ${rest} min cinta en intervalos: 1 min trote / 1 min caminata.`,
-      note
-    },
-    2: {
-      text: `40 min cinta con inclinación alta (nivel 10-12, vel 5-6). Caminata empinada sin correr — quema grasa sin construir pierna.`,
-      note: ""
-    },
-    3: {
-      text: `Remo en intervalos: 500m fuerte, 1 min descanso, repetir 6 veces. El display te muestra la distancia.`,
-      note: ""
-    },
-    4: {
-      text: `${sm} min escaladora ritmo moderado + ${rest} min cinta plana suave para bajar pulsaciones.`,
-      note
-    },
-    5: {
-      text: `HIIT en cinta o escaladora: 30 seg al maximo / 30 seg suave, 15 a 20 rondas. Corto e intenso.`,
-      note: ""
-    },
-  };
-  return map[dayId];
-}
+{id:3,label:"Mié",title:"Core y cardio",color:"#a78bfa",dur:"50 min",
+ blocks:[
+  {name:"Calentar",time:"5 min",items:[
+    ex({id:"c-cin3",thumb:"cinta",name:"Cinta suave",target:"Entrada en calor",equip:"cardio",sets:1,reps:"5 min",peso:false,rest:0,desc:"Movilidad general antes del circuito."}),
+  ]},
+  {name:"Máquinas",time:"12 min",items:[
+    ex({id:"crunch3",thumb:"crunch",name:"Abdominal crunch",target:"Recto abdominal",sets:3,reps:"15",rest:45,desc:"Peso liviano. Abre el trabajo de core del día."}),
+    ex({id:"captains3",thumb:"captains",name:"Captain's chair",target:"Abdomen bajo",equip:"libre",sets:3,reps:"12",peso:false,rest:45,desc:"Colgada de los antebrazos en la torre vertical, subís las rodillas al pecho con control, sin balanceo."}),
+  ]},
+  {name:"Suelo · circuito",time:"20 min",note:"3 vueltas completas sin pausa entre ejercicios. 60 s entre vueltas.",items:[
+    ex({id:"plancha3",thumb:null,name:"Plancha",target:"Transverso",equip:"libre",sets:3,reps:"45 seg",peso:false,rest:0,desc:"Cadera en línea. Sumá 5 seg por semana."}),
+    ex({id:"mountain3",thumb:null,name:"Mountain climbers",target:"Core · cardio",equip:"libre",sets:3,reps:"30 seg",peso:false,rest:0,desc:"En plancha alta, rodillas al pecho alternando, rápido."}),
+    ex({id:"planchalat3",thumb:null,name:"Plancha lateral",target:"Oblicuos",equip:"libre",sets:3,reps:"20 seg c/u",peso:false,rest:0,desc:"De costado, cadera arriba. Un lado y el otro."}),
+    ex({id:"bicicleta3",thumb:null,name:"Bicicleta abdominal",target:"Oblicuos",equip:"libre",sets:3,reps:"20 total",peso:false,rest:60,desc:"Codo a la rodilla contraria, alternando, lento y controlado."}),
+  ]},
+ ],
+ cardio:{text:"Intervalos en cinta: 1 min fuerte / 2 min suave × 6. Este es el único día que vas al máximo.",note:"Si un día venís sin energía, este es el que se puede acortar o saltar antes que los de fuerza."}},
 
-const days = [
-  {
-    id:1, label:"D1", title:"Hombros · Triceps · Abs", color:"#e879f9",
-    exercises:[
-      {name:"Press de Hombro",       equip:"maquina",    target:"Hombros",          sets:4, reps:"15",     desc:"Sentada en la maquina de press de hombro. Ajusta el asiento para que las asas queden a la altura de los hombros. Empujas hacia arriba sin bloquear los codos arriba. Baja lento y controlado.", video:"https://www.youtube.com/watch?v=Dtow4JuFkJA", vl:"Como hacer press de hombros en maquina"},
-      {name:"Elevaciones Laterales", equip:"mancuernas", target:"Hombros laterales",sets:4, reps:"20",     desc:"De pie, mancuernas a los costados. Subes los brazos en cruz hasta la altura del hombro. Muy lento en la bajada — ahi es donde trabaja el musculo.", video:"https://www.youtube.com/watch?v=b6KtNTSHA54", vl:"Elevaciones laterales con mancuerna — tecnica completa"},
-      {name:"Elevaciones Frontales", equip:"mancuernas", target:"Hombro anterior",  sets:3, reps:"15",     desc:"De pie, mancuernas al frente del cuerpo. Subes un brazo por vez hasta la altura del hombro con la palma hacia abajo. Baja lento y controlado.", video:"https://www.youtube.com/watch?v=TEQPu0w9cHo", vl:"Elevacion frontal de hombros"},
-      {name:"Tríceps en Polea",      equip:"polea",      target:"Triceps",          sets:4, reps:"20",     desc:"Cable en posicion alta con cuerda. Codos pegados al cuerpo, estiras los brazos hacia abajo. Al final del movimiento separas las puntas de la cuerda hacia afuera para mayor contraccion.", video:"https://www.youtube.com/watch?v=XUsty_6ux1k", vl:"Extension de triceps en polea alta con cuerda"},
-      {name:"Triceps Panatta",        equip:"maquina",    target:"Triceps",          sets:3, reps:"15",     desc:"Panatta ISC053. Te sentas con la cabeza apoyada en el respaldo. Los antebrazos van sobre las almohadillas curvas arriba. Empujas hacia abajo hasta estirar los brazos. Vuelves lento controlando.", video:"https://www.youtube.com/watch?v=Dtow4JuFkJA", vl:"Maquina de triceps Panatta — como usarla"},
-      {name:"Abdomen Máquina",       equip:"maquina",    target:"Abdomen",          sets:4, reps:"20",     desc:"Codos en los apoyos curvos de la maquina Panatta. Bajas contrayendo el core hacia las rodillas. Sube lento controlando el movimiento.", video:"https://www.youtube.com/watch?v=DLU0RKjZV2g", vl:"Crunch abdominal en maquina — tecnica"},
-      {name:"Plancha",               equip:"libre",      target:"Core",             sets:3, reps:"45 seg", desc:"Apoyada en antebrazos y puntas de pie. Cuerpo recto, sin hundir la cadera ni elevarla. Respira.", video:null, vl:null},
-    ]
-  },
-  {
-    id:2, label:"D2", title:"Gluteo — Sesion principal", color:"#f472b6",
-    exercises:[
-      {name:"Hip Thrust",            equip:"mancuernas", target:"Gluteo mayor",      sets:4, reps:"15",     desc:"Espalda alta apoyada en banco, mancuerna grande en caderas. Subes las caderas hasta quedar en linea recta, apretando el gluteo arriba. Bajas sin tocar el suelo.", video:"https://www.youtube.com/watch?v=fWdFKm56euc", vl:"Hip thrust con mancuerna"},
-      {name:"Peso Muerto Rumano",    equip:"mancuernas", target:"Isquiotibiales · Gluteo", sets:4, reps:"15", desc:"De pie, mancuernas al frente. Bajas deslizandolas por las piernas con espalda recta hasta sentir el estiramiento. Subes apretando el gluteo.", video:"https://www.youtube.com/watch?v=9j_L1KgpK8Y", vl:"Peso muerto rumano con mancuernas"},
-      {name:"Sentadilla Sumo",       equip:"mancuernas", target:"Gluteo · Aductores",sets:3, reps:"20",     desc:"Pies bien abiertos en sumo, punta de pies hacia afuera. Una mancuerna colgando en el centro. Bajas con la espalda recta. Trabaja mas gluteo y aductor que cuadriceps.", video:"https://www.youtube.com/watch?v=fluAJnTl-xE", vl:"Como hacer sentadilla sumo con mancuerna"},
-      {name:"Patada de Glúteo",      equip:"polea",      target:"Gluteo",           sets:4, reps:"20 c/u",  desc:"Cable en posicion baja con tobillera. Te inclinás hacia adelante apoyando en la maquina. Empujas la pierna hacia atras en linea recta, apretando el gluteo arriba. No arquees la espalda.", video:"https://www.youtube.com/watch?v=fWdFKm56euc", vl:"Patada de gluteo en cable"},
-      {name:"Abducción de Cadera",   equip:"maquina",    target:"Gluteo medio",     sets:4, reps:"25",      desc:"Sentada, piernas entre las almohadillas. Las abris hacia afuera lento. Pausa arriba un segundo antes de volver. Trabaja el gluteo del costado que da forma.", video:"https://www.youtube.com/watch?v=2vCRMi-lgJ4", vl:"Abduccion de cadera en maquina — tecnica correcta"},
-      {name:"Plancha Lateral",       equip:"libre",      target:"Core · Oblicuos",  sets:3, reps:"40 seg c/u", desc:"Apoyada en un antebrazo y el costado del pie. Cuerpo en linea recta. Cambia de lado. Fortalece el core lateral sin construir cintura.", video:null, vl:null},
-    ]
-  },
-  {
-    id:3, label:"D3", title:"Espalda · Biceps · Abs", color:"#38bdf8",
-    exercises:[
-      {name:"Jalón al Pecho",        equip:"polea",      target:"Dorsales",         sets:4, reps:"15",     desc:"Sentada bajo la polea alta con las rodillas bajo el pad que te fija. Manos en la barra ancha con agarre prono (palmas mirando hacia adelante, alejadas de vos). Manos mas anchas que los hombros. Tiras la barra hacia el pecho alto, codos hacia abajo y atras. No vayas mas abajo del menton. Baja la barra lento controlando.", video:"https://www.youtube.com/watch?v=Ln0CZzrlTEw", vl:"Jalon al pecho — tutorial paso a paso"},
-      {name:"Remo con Mancuerna",    equip:"mancuernas", target:"Espalda media",    sets:4, reps:"15 c/u",  desc:"Rodilla y mano del mismo lado apoyadas en el banco. Mancuerna en la mano libre. Tiras hacia la cadera con el codo pegado al cuerpo. Sin rotar el torso.", video:"https://www.youtube.com/watch?v=ThYEWIpPB0o", vl:"Remo con mancuerna unilateral — tecnica completa"},
-      {name:"Remo en Polea",         equip:"polea",      target:"Espalda media",    sets:3, reps:"15",     desc:"Sentada en la polea baja, pies en los apoyos. Tiras la manija hacia el ombligo con codos cerca del cuerpo. Espalda recta siempre.", video:"https://www.youtube.com/watch?v=duJvtG1qIko", vl:"Remo en polea baja — tecnica"},
-      {name:"Curl Bíceps",           equip:"mancuernas", target:"Biceps",           sets:3, reps:"20",     desc:"De pie, mancuernas a los costados. Doblas el codo llevando la mancuerna al hombro. Baja lento. Podes hacerlo alternado o los dos juntos.", video:"https://www.youtube.com/watch?v=D1DxpRE5FkU", vl:"Curl de biceps con mancuerna"},
-      {name:"Curl Martillo",         equip:"mancuernas", target:"Biceps · Antebrazo",sets:3, reps:"15",    desc:"Igual que el curl pero con los pulgares mirando al techo (agarre neutro, como un martillo). Trabaja el biceps desde otro angulo y el antebrazo.", video:"https://www.youtube.com/watch?v=i60DlC_Wj0E", vl:"Curl martillo — tecnica"},
-      {name:"Bicicleta Abdominal",   equip:"libre",      target:"Oblicuos",         sets:4, reps:"25",     desc:"Acostada, manos en la nuca. Codo derecho a rodilla izquierda, luego al reves. Lento y controlado, no lo hagas rapido.", video:null, vl:null},
-      {name:"Russian Twist",         equip:"mancuernas", target:"Oblicuos",         sets:3, reps:"20",     desc:"Sentada en V, piernas levantadas, mancuerna entre manos. Giras el torso de lado a lado tocando la mancuerna en el suelo.", video:null, vl:null},
-    ]
-  },
-  {
-    id:4, label:"D4", title:"Gluteo — Sesion de mantenimiento", color:"#fb923c",
-    exercises:[
-      {name:"Hip Thrust Unilateral", equip:"mancuernas", target:"Gluteo mayor",     sets:3, reps:"15 c/u",  desc:"Igual que el hip thrust pero con una sola pierna. La otra va extendida al frente. Mas dificil, mas aislamiento. Una mancuerna en la cadera.", video:"https://www.youtube.com/watch?v=fWdFKm56euc", vl:"Hip thrust unilateral — gluteo"},
-      {name:"Peso Muerto Una Pierna",equip:"mancuernas", target:"Isquiotibiales · Gluteo", sets:3, reps:"12 c/u", desc:"De pie en una pierna, mancuerna en la mano opuesta. Bajas el torso hacia adelante mientras la pierna libre va hacia atras. Equilibrio y control. Muy efectivo para el gluteo.", video:"https://www.youtube.com/watch?v=-2h7UPouOqc", vl:"Peso muerto rumano a una pierna con mancuerna"},
-      {name:"Sentadilla Goblet",     equip:"mancuernas", target:"Gluteo · Cuadriceps", sets:3, reps:"20",   desc:"Una mancuerna grande sostenida en el pecho con ambas manos. Pies al ancho de las caderas. Sentadilla profunda con la espalda recta. Peso moderado para no engrosar pierna.", video:"https://www.youtube.com/watch?v=5HHITKuLxUs", vl:"Como hacer sentadilla goblet con mancuerna"},
-      {name:"Extensión Cuádriceps",  equip:"maquina",    target:"Cuadriceps",       sets:3, reps:"20",     desc:"Sentada, tobillos bajo los rodillos. Estiras las piernas hacia arriba. Peso bajo — el objetivo es tonificar sin agregar volumen.", video:"https://www.youtube.com/watch?v=r7ZMTzfiICA", vl:"Extension de cuadriceps en maquina"},
-      {name:"Patada de Glúteo",      equip:"polea",      target:"Gluteo",           sets:3, reps:"20 c/u",  desc:"Cable en posicion baja con tobillera. Empujas la pierna hacia atras apretando el gluteo arriba. No arquees la espalda.", video:"https://www.youtube.com/watch?v=fWdFKm56euc", vl:"Patada de gluteo en cable"},
-      {name:"Plancha",               equip:"libre",      target:"Core",             sets:3, reps:"50 seg", desc:"Apoyada en antebrazos y puntas de pie. Cuerpo recto. Esta vez aguantas un poco mas que el dia 1.", video:null, vl:null},
-    ]
-  },
-  {
-    id:5, label:"D5", title:"Brazos · Abs · HIIT", color:"#34d399",
-    exercises:[
-      {name:"Curl Concentrado",      equip:"mancuernas", target:"Biceps",           sets:3, reps:"15 c/u",  desc:"Sentada en el borde del banco, codo apoyado en la parte interna del muslo. Curl lento y completo. Aisla el biceps al maximo.", video:"https://www.youtube.com/watch?v=ogwifBtU7aM", vl:"Curl de biceps concentrado — tecnica y errores"},
-      {name:"Curl Predicador",       equip:"maquina",    target:"Biceps aislado",   sets:3, reps:"15",     desc:"Codos apoyados en la almohadilla inclinada. Doblas los brazos sin que los codos se muevan. La maquina italiana blanca del gym.", video:"https://www.youtube.com/watch?v=lbbDV2_Ho8E", vl:"Curl predicador en maquina — principiantes"},
-      {name:"Tríceps Barra V",       equip:"polea",      target:"Triceps",          sets:4, reps:"20",     desc:"Barra en V en la polea alta. Codos pegados al cuerpo. Estiras hacia abajo. Aprietas abajo un segundo antes de volver.", video:"https://www.youtube.com/watch?v=UQZdNqr5EhA", vl:"Triceps barra V en polea"},
-      {name:"Press Francés",         equip:"mancuernas", target:"Triceps",          sets:3, reps:"15",     desc:"Acostada en banco. Mancuernas arriba con brazos extendidos. Doblas los codos llevando las mancuernas hacia la frente, estiras. Solo se mueven los codos.", video:"https://www.youtube.com/watch?v=HAyqcljtJuo", vl:"Press frances con mancuernas"},
-      {name:"Triceps Panatta",          equip:"maquina",    target:"Triceps",          sets:3, reps:"15",     desc:"Panatta ISC053. Te sentas con la cabeza apoyada en el respaldo. Los antebrazos van sobre las almohadillas curvas arriba. Empujas hacia abajo hasta estirar los brazos. Vuelves lento controlando.", video:"https://www.youtube.com/watch?v=Dtow4JuFkJA", vl:"Maquina de triceps Panatta — como usarla"},
-      {name:"Abdomen Máquina",       equip:"maquina",    target:"Abdomen",          sets:4, reps:"20",     desc:"Codos en los apoyos curvos. Bajas contrayendo el core hacia las rodillas. Sube lento controlando.", video:"https://www.youtube.com/watch?v=DLU0RKjZV2g", vl:"Crunch abdominal en maquina — tecnica"},
-      {name:"Russian Twist",         equip:"mancuernas", target:"Oblicuos",         sets:3, reps:"20",     desc:"Sentada en V, piernas levantadas, mancuerna entre manos. Giras el torso de lado a lado tocando el suelo.", video:null, vl:null},
-      {name:"Plancha Lateral",       equip:"libre",      target:"Core · Oblicuos",  sets:3, reps:"40 seg c/u", desc:"Apoyada en un antebrazo y el costado del pie. Cuerpo en linea recta. Cambia de lado.", video:null, vl:null},
-    ]
-  },
+{id:4,label:"Jue",title:"Inferior B · Cuádriceps y glúteo",color:"#fb923c",dur:"70 min",
+ blocks:[
+  {name:"Calentar",time:"8 min",items:[
+    ex({id:"c-esc4",thumb:"escaladora",name:"Escaladora suave",target:"Entrada en calor",equip:"cardio",sets:1,reps:"5 min",peso:false,rest:0,desc:"Nivel bajo."}),
+    ex({id:"c-ext4",thumb:"extension",name:"Extensión ligera",target:"Rodilla · activación",sets:2,reps:"20",peso:true,rest:30,desc:"Peso muy bajo, para lubricar la rodilla antes del trabajo fuerte."}),
+  ]},
+  {name:"Máquinas",time:"37 min",note:"En la extensión, 1 segundo de pausa arriba apretando el cuádriceps. RIR 2.",items:[
+    ex({id:"extension",thumb:"extension",name:"Extensión de piernas",target:"Cuádriceps",sets:4,reps:"12–15",rest:75,desc:"Sentada, el rodillo sobre el empeine, estirás las rodillas hasta arriba. Tempo lento."}),
+    ex({id:"prensaalta",thumb:"prensa",name:"Prensa · pies altos",target:"Glúteo · femoral",sets:4,reps:"10",rest:90,desc:"La misma prensa pero con los pies arriba de la plataforma: pega más en glúteo y femoral."}),
+    ex({id:"femoral4",thumb:"femoral",name:"Femoral sentado",target:"Isquiotibiales",sets:4,reps:"12",rest:75,desc:"Rodillo sobre la parte baja de la pierna, empujás abajo y atrás."}),
+    ex({id:"aductor",thumb:"aductor",name:"Aductor",target:"Muslo interno",sets:3,reps:"20",rest:60,desc:"La opuesta al abductor: empezás con las piernas abiertas y las cerrás."}),
+    ex({id:"lumbar",thumb:"lumbar",name:"Extensión de espalda",target:"Lumbares",sets:3,reps:"12",rest:45,desc:"Espalda apoyada, empujás hacia atrás. Equilibra todo el trabajo de abdomen."}),
+  ]},
+  {name:"Suelo",time:"10 min",items:[
+    ex({id:"stepups",thumb:null,name:"Step-ups al banco",target:"Glúteo · cuádriceps",equip:"libre",sets:3,reps:"12 c/u",peso:false,rest:60,desc:"Subís a un banco con una pierna, la otra sube sin apoyarse, bajás con control. Alternás."}),
+    ex({id:"crunch4",thumb:"crunch",name:"Abdominal crunch",target:"Recto abdominal",sets:3,reps:"15",rest:45,desc:"Peso liviano."}),
+    ex({id:"bicicleta4",thumb:null,name:"Bicicleta abdominal",target:"Oblicuos",equip:"libre",sets:3,reps:"20",peso:false,rest:45,desc:"Codo a rodilla contraria, lento."}),
+  ]},
+ ],
+ cardio:{text:"15 min cinta suave. Las piernas ya vienen cargadas de la prensa.",note:""}},
+
+{id:5,label:"Vie",title:"Superior B · Empuje y brazos",color:"#34d399",dur:"70 min",
+ blocks:[
+  {name:"Calentar",time:"6 min",items:[
+    ex({id:"c-esc5",thumb:"escaladora",name:"Escaladora suave",target:"Entrada en calor",equip:"cardio",sets:1,reps:"4 min",peso:false,rest:0,desc:"Nivel bajo."}),
+    ex({id:"c-lat5",thumb:"laterales",name:"Laterales muy ligeras",target:"Hombro · activación",sets:2,reps:"20",peso:true,rest:30,desc:"Casi sin peso, para calentar el hombro."}),
+  ]},
+  {name:"Máquinas",time:"38 min",note:"Las elevaciones laterales son las que dan el hombro marcado. No las apures. RIR 2.",items:[
+    ex({id:"presshombro",thumb:"presshombro1",name:"Press de hombros",target:"Hombros",sets:4,reps:"8–10",rest:90,desc:"Sentada con respaldo, empujás las manijas hacia arriba sin bloquear los codos. No arquees la lumbar.",rot:"A",altThumb:"presshombro2",altName:"Press de hombros 2",altDesc:"El otro press de hombro del gym (converging): las manijas se juntan hacia el centro al subir."}),
+    ex({id:"laterales",thumb:"laterales",name:"Elevaciones laterales",target:"Hombro lateral",sets:4,reps:"15",rest:60,desc:"Subís los brazos hacia los costados hasta la altura del hombro, sin pasarte. Control en la bajada."}),
+    ex({id:"presspecho",thumb:"presspecho",name:"Press de pecho",target:"Pecho",sets:4,reps:"10",rest:75,desc:"Sentada, empujás las manijas hacia adelante a la altura del pecho."}),
+    ex({id:"triceps5",thumb:"functional",name:"Tríceps en polea",target:"Tríceps",equip:"polea",sets:4,reps:"15",rest:60,desc:"Functional trainer, polea alta. Codos pegados, estirás hacia abajo.",rot:"A",altThumb:"pecdeck",altName:"Rear delt (pec deck)",altEquip:"maquina",altDesc:"La pec deck al revés: mirás el respaldo y abrís los brazos hacia atrás. Deltoide posterior, buenísimo para postura."}),
+    ex({id:"biceps5",thumb:"biceps",name:"Máquina de bíceps",target:"Bíceps",sets:3,reps:"15",rest:60,desc:"Brazos apoyados, flexión completa.",rot:"A",altThumb:"asistida",altName:"Fondos asistidos",altEquip:"maquina",altDesc:"Las paralelas de la torre a la altura de la cadera. Te apoyás con los brazos estirados y bajás doblando los codos. Ojo: más peso = más ayuda."}),
+    ex({id:"crunch5",thumb:"crunch",name:"Abdominal crunch",target:"Recto abdominal",sets:3,reps:"15",rest:45,desc:"Peso liviano."}),
+    ex({id:"captains5",thumb:"captains",name:"Captain's chair",target:"Abdomen bajo",equip:"libre",sets:3,reps:"12",peso:false,rest:45,desc:"Rodillas al pecho, sin balanceo."}),
+  ]},
+  {name:"Suelo",time:"5 min",items:[
+    ex({id:"planchatoque5",thumb:null,name:"Plancha con toque de cadera",target:"Core · oblicuos",equip:"libre",sets:3,reps:"10 c/u",peso:false,rest:30,desc:"En plancha, rotás la cadera hasta rozar el suelo de un lado y del otro."}),
+  ]},
+ ],
+ cardio:{text:"5 min escaladora → 10 min cinta → 5 min escaladora.",note:""}},
 ];
 
-let activeDay=0, currentWeek=1, completed={}, expanded=null, weights={};
+const MEALS=[
+  {id:"almuerzo",name:"Almuerzo",macros:"1½ palma proteína · 1 puñado carbo · 2 puños verdura · 1 pulgar grasa",
+   opts:"<b>Proteína:</b> pollo, salmón, atún, huevo, ternera magra, tofu<br><b>Carbo:</b> arroz, quinoa, papa, boniato, pasta<br><b>Verdura:</b> lo que haya, dos puños<br><b>Grasa:</b> aceite de oliva, palta, un puñadito de nueces"},
+  {id:"snack",name:"Snack",macros:"1 palma proteína · ½ pulgar grasa",
+   opts:"Pan proteico + requesón + salmón (tu combo).<br>O yogur griego con nueces.<br>El pan proteico ya cuenta como el carbo de esta comida."},
+  {id:"cena",name:"Cena",macros:"1½ palma proteína · 1 puñado carbo · 2 puños verdura · 1 pulgar grasa",
+   opts:"<b>Proteína:</b> igual que el almuerzo<br><b>Carbo:</b> el puñado va sobre todo en la comida cercana al gym<br><b>Verdura:</b> dos puños<br><b>Grasa:</b> un pulgar"},
+];
 
-function saveState() {
-  try {
-    localStorage.setItem('gym_completed', JSON.stringify(completed));
-    localStorage.setItem('gym_weights', JSON.stringify(weights));
-    localStorage.setItem('gym_week', currentWeek);
-    localStorage.setItem('gym_day', activeDay);
-  } catch(e) {}
+let view="entrenar",activeDay=0,currentWeek=1,abMode="A",expanded=null;
+let done={},sets={},bw=[],protein={};
+
+function save(){try{
+  localStorage.setItem('lm_done',JSON.stringify(done));
+  localStorage.setItem('lm_sets',JSON.stringify(sets));
+  localStorage.setItem('lm_bw',JSON.stringify(bw));
+  localStorage.setItem('lm_prot',JSON.stringify(protein));
+  localStorage.setItem('lm_week',currentWeek);
+  localStorage.setItem('lm_day',activeDay);
+  localStorage.setItem('lm_ab',abMode);
+}catch(e){}}
+function load(){try{
+  let x;
+  if(x=localStorage.getItem('lm_done'))done=JSON.parse(x);
+  if(x=localStorage.getItem('lm_sets'))sets=JSON.parse(x);
+  if(x=localStorage.getItem('lm_bw'))bw=JSON.parse(x);
+  if(x=localStorage.getItem('lm_prot'))protein=JSON.parse(x);
+  if(x=localStorage.getItem('lm_week'))currentWeek=parseInt(x);
+  if(x=localStorage.getItem('lm_day'))activeDay=parseInt(x);
+  if(x=localStorage.getItem('lm_ab'))abMode=x;
+}catch(e){}}
+
+function todayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function shortDate(k){const p=k.split('-');return parseInt(p[2])+'/'+parseInt(p[1]);}
+
+function resolveItem(it){
+  if(it.rot&&abMode==="B"&&it.altName){
+    return Object.assign({},it,{
+      name:it.altName,desc:it.altDesc||it.desc,
+      thumb:it.altThumb!==undefined?it.altThumb:it.thumb,
+      equip:it.altEquip||it.equip,
+    });
+  }
+  return it;
+}
+function allItems(day){let a=[];day.blocks.forEach(b=>b.items.forEach(i=>a.push(i)));return a;}
+
+function history(exid){
+  let out=[];
+  Object.keys(sets).sort().forEach(dk=>{
+    const s=sets[dk][exid];
+    if(!s)return;
+    const dn=s.filter(x=>x.done&&x.w);
+    if(dn.length){out.push({date:dk,w:Math.max(...dn.map(x=>Number(x.w)))});}
+  });
+  return out;
+}
+function lastMark(exid){
+  const tk=todayKey();
+  const dates=Object.keys(sets).filter(d=>d!==tk).sort().reverse();
+  for(const d of dates){
+    const s=sets[d]&&sets[d][exid];
+    if(!s)continue;
+    const dn=s.filter(x=>x.done&&(x.w||x.r));
+    if(dn.length){const b=dn.reduce((a,c)=>Number(c.w||0)>Number(a.w||0)?c:a);return {w:b.w,r:b.r};}
+  }
+  return null;
 }
 
-function loadState() {
-  try {
-    const c = localStorage.getItem('gym_completed');
-    const w = localStorage.getItem('gym_weights');
-    const wk = localStorage.getItem('gym_week');
-    const d = localStorage.getItem('gym_day');
-    if(c) completed = JSON.parse(c);
-    if(w) weights = JSON.parse(w);
-    if(wk) currentWeek = parseInt(wk);
-    if(d) activeDay = parseInt(d);
-  } catch(e) {}
+function ensureSets(day){
+  const tk=todayKey();
+  if(!sets[tk])sets[tk]={};
+  if(!sets[tk].__day)sets[tk].__day=day.id;
+  allItems(day).forEach(raw=>{
+    const it=resolveItem(raw);
+    if(!sets[tk][it.id])sets[tk][it.id]=Array.from({length:it.sets},()=>({w:"",r:"",done:false}));
+    else if(sets[tk][it.id].length!==it.sets)sets[tk][it.id]=Array.from({length:it.sets},(_,i)=>sets[tk][it.id][i]||{w:"",r:"",done:false});
+  });
 }
 
-function getSuggested(name, week){
-  const cfg = weightConfig[name];
-  if(!cfg) return null;
-  return {value: cfg.base + cfg.inc*(week-1), unit: cfg.unit, inc: cfg.inc};
+function setVal(exid,i,f,v){const tk=todayKey();if(!sets[tk]||!sets[tk][exid])return;sets[tk][exid][i][f]=v;save();}
+function toggleSet(it,i){const tk=todayKey();const s=sets[tk][it.id][i];s.done=!s.done;save();render();}
+function toggleExpand(id){expanded=expanded===id?null:id;render();}
+
+function dayProgress(day){
+  const tk=todayKey();if(!sets[tk]||sets[tk].__day!==day.id)return{d:0,t:0};
+  let d=0,t=0;
+  allItems(day).forEach(raw=>{const it=resolveItem(raw);const s=sets[tk][it.id];if(s){t+=s.length;d+=s.filter(x=>x.done).length;}});
+  return{d,t};
 }
 
 function render(){
-  const day = days[activeDay];
-  const color = day.color;
-  const cardio = getCardio(day.id, currentWeek);
+  const el=document.getElementById('app');
+  renderTabs();
+  if(view==="entrenar")el.innerHTML=renderTrain();
+  else if(view==="plato")el.innerHTML=renderFood();
+  else el.innerHTML=renderProg();
+  bindInputs();
+}
 
-  document.getElementById('glow').style.background = `radial-gradient(ellipse at 50% 0%, ${color}12 0%, transparent 65%)`;
-  document.getElementById('dayTitle').textContent = day.title;
-  document.getElementById('weekLabel').textContent = 'Semana ' + currentWeek;
-  document.getElementById('weekPrev').className = 'week-btn' + (currentWeek > 1 ? ' active' : '');
+function renderTabs(){
+  const tabs=[["entrenar","Entrenar","▦"],["plato","Plato","◍"],["progreso","Progreso","◈"]];
+  document.getElementById('tabbar').innerHTML=tabs.map(t=>
+    '<button class="tab '+(view===t[0]?'on':'')+'" onclick="setView(\''+t[0]+'\')"><span class="tab-ico">'+t[2]+'</span>'+t[1]+'</button>'
+  ).join('');
+}
+function setView(v){view=v;expanded=null;save();render();}
 
-  document.getElementById('dayTabs').innerHTML = days.map((d,i) => `
-    <button class="day-tab" onclick="switchDay(${i})"
-      style="border:1px solid ${i===activeDay ? d.color : 'rgba(255,255,255,0.07)'};
-             background:${i===activeDay ? d.color+'15' : 'transparent'};
-             color:${i===activeDay ? d.color : 'rgba(255,255,255,0.28)'}">
-      ${d.label}
-    </button>`).join('');
+function renderTrain(){
+  const day=DAYS[activeDay];const color=day.color;
+  ensureSets(day);
+  document.getElementById('glow').style.background='radial-gradient(ellipse at 50% 0%, '+color+'12 0%, transparent 65%)';
+  const pr=dayProgress(day);
+  const pct=pr.t?Math.round(pr.d/pr.t*100):0;
 
-  const doneCount = day.exercises.filter(e => completed[day.id+'-'+e.name]).length;
-  const pct = (doneCount / day.exercises.length * 100).toFixed(0);
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressFill').style.background = color;
-  document.getElementById('progressLabel').style.color = color;
-  document.getElementById('progressLabel').textContent = doneCount + '/' + day.exercises.length;
+  let h='<div class="header"><div class="header-top"><div>'+
+    '<div class="eyebrow">La Máquina · 5 días</div>'+
+    '<div class="day-title">'+day.title+'</div></div>'+
+    '<div class="week-pill"><button class="week-btn '+(currentWeek>1?'active':'')+'" onclick="chWeek(-1)">‹</button>'+
+    '<div class="week-label">Semana '+currentWeek+'</div><button class="week-btn active" onclick="chWeek(1)">›</button></div></div>';
+  h+='<div class="day-tabs">'+DAYS.map((d,i)=>
+    '<button class="day-tab" onclick="chDay('+i+')" style="border:1px solid '+(i===activeDay?d.color:'rgba(255,255,255,0.07)')+';background:'+(i===activeDay?d.color+'15':'transparent')+';color:'+(i===activeDay?d.color:'rgba(255,255,255,0.28)')+'">'+d.label+'</button>'
+  ).join('')+'</div>';
+  h+='<div class="progress-row"><div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%;background:'+color+'"></div></div>'+
+    '<span class="progress-label" style="color:'+color+'">'+pr.d+'/'+pr.t+'</span></div></div>';
 
-  document.getElementById('exList').innerHTML = day.exercises.map(ex => {
-    const key = day.id + '-' + ex.name;
-    const done = !!completed[key];
-    const open = expanded === key;
-    const sug = getSuggested(ex.name, currentWeek);
-    const userW = weights[key] || '';
-    const es = equipStyles[ex.equip];
+  const hasRot=allItems(day).some(i=>i.rot);
+  if(hasRot){
+    h+='<div class="abmode">'+['A','B'].map(m=>
+      '<button class="abmode-btn" onclick="setAB(\''+m+'\')" style="'+(abMode===m?'border-color:'+color+';background:'+color+'15;color:'+color:'')+'">SEMANA '+m+'</button>'
+    ).join('')+'</div>';
+  }
 
+  h+='<div class="legend">'+
+    '<div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div>Máquina</div>'+
+    '<div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div>Polea</div>'+
+    '<div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div>Peso corporal</div>'+
+    '<div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Cardio</div></div>';
 
+  h+='<div class="exercises">';
+  day.blocks.forEach(b=>{
+    h+='<div class="block-label">'+b.name+' <span class="t">· '+b.time+'</span></div>';
+    if(b.note)h+='<div class="block-note">'+b.note+'</div>';
+    h+='<div class="ex-list">';
+    b.items.forEach(raw=>{h+=renderCard(resolveItem(raw),day,color);});
+    h+='</div>';
+  });
+  h+='</div>';
 
-    let expandedHTML = '';
-    if(open) {
-      const videoHTML = ex.video ? `
-        <button class="video-btn" onclick="event.stopPropagation();window.open('${ex.video}','_blank')">
-          <div class="video-play">&#9654;</div>
-          <div class="video-info">
-            <div class="video-label">${ex.vl}</div>
-            <div class="video-sub">Abrir en YouTube</div>
-          </div>
-        </button>` : '';
+  h+='<div class="cardio-section"><div class="cardio-card" style="background:'+color+'0e;border:1px solid '+color+'22">'+
+    '<div class="cardio-title">Cardio</div>'+
+    '<div class="cardio-text">'+day.cardio.text+'</div>'+
+    (day.cardio.note?'<div class="cardio-note">'+day.cardio.note+'</div>':'')+
+    '</div></div>';
+  return h;
+}
 
-      let weightHTML = '';
-      if(sug) {
-        const dots = [1,2,3,4,5,6,7,8].map(w => {
-          const sw = getSuggested(ex.name, w);
-          const isCur = w === currentWeek;
-          return `<div class="prog-dot" onclick="event.stopPropagation();jumpWeek(${w})">
-            <div class="prog-dot-inner" style="background:${isCur ? color : 'rgba(255,255,255,0.05)'};color:${isCur ? '#000' : 'rgba(255,255,255,0.35)'};border:1px solid ${isCur ? color : 'rgba(255,255,255,0.07)'};">${sw.value}</div>
-            <div class="prog-dot-lbl">S${w}</div>
-          </div>`;
-        }).join('');
+function renderCard(it,day,color){
+  const tk=todayKey();
+  const s=(sets[tk]&&sets[tk][it.id])||[];
+  const dn=s.filter(x=>x.done).length;
+  const complete=s.length>0&&dn===s.length;
+  const eq=EQUIP[it.equip];
+  const open=expanded===it.id;
+  const last=lastMark(it.id);
 
-        let feedback = '';
-        if(userW && Number(userW) > 0) {
-          feedback = Number(userW) >= sug.value
-            ? `<div class="weight-feedback" style="color:#4ade80">Bien. La proxima semana proba ${sug.value + sug.inc} ${sug.unit}</div>`
-            : `<div class="weight-feedback" style="color:#fbbf24">Sugerido: ${sug.value} ${sug.unit}. Si es mucho, esta bien ir de a poco.</div>`;
-        }
+  let thumb;
+  if(it.thumb&&THUMBS[it.thumb])thumb='<img class="ex-thumb" src="'+THUMBS[it.thumb]+'" alt="'+it.name+'"/>';
+  else thumb='<div class="ex-thumb-ph">'+(it.equip==="libre"?'◇':'○')+'</div>';
 
-        weightHTML = `<div class="weight-box">
-          <div class="weight-header">
-            <span class="weight-lbl">Peso</span>
-            <span class="weight-suggested" style="color:${color}">S${currentWeek} — ${sug.value} ${sug.unit}</span>
-          </div>
-          <div class="prog-dots">${dots}</div>
-          <div class="weight-input-wrap">
-            <input class="weight-input" type="number" placeholder="Peso usado hoy (ej: ${sug.value})"
-              value="${userW}" style="border:1px solid ${userW ? color+'50' : 'rgba(255,255,255,0.07)'}"
-              oninput="event.stopPropagation();saveWeight('${key}',this.value)"
-              onclick="event.stopPropagation()"/>
-            <span class="weight-unit">${sug.unit}</span>
-          </div>${feedback}
-        </div>`;
-      } else {
-        weightHTML = `<div class="weight-box">
-          <div class="weight-lbl" style="margin-bottom:8px">Notas</div>
-          <input class="notes-input" type="text" placeholder="Como te fue..."
-            value="${userW}"
-            oninput="event.stopPropagation();saveWeight('${key}',this.value)"
-            onclick="event.stopPropagation()"/>
-        </div>`;
+  let h='<div class="ex-card" style="background:'+(complete?color+'0d':'rgba(255,255,255,0.025)')+';border:1px solid '+(complete?color+'28':'rgba(255,255,255,0.05)')+'">';
+  h+='<div class="ex-row" onclick="toggleExpand(\''+it.id+'\')">'+thumb+
+    '<div class="ex-info"><div class="ex-name'+(complete?' done':'')+'">'+it.name+'</div>'+
+    '<div class="ex-target">'+it.target+'</div>'+
+    '<div class="ex-tags"><span class="ex-sets" style="color:'+color+';background:'+color+'15">'+it.sets+' × '+it.reps+'</span>'+
+    '<span class="equip-badge" style="color:'+eq.color+';background:'+eq.bg+'">'+eq.label+'</span>'+
+    (last&&last.w?'<span class="ex-last" style="color:'+color+'">últ. '+last.w+' kg</span>':'')+
+    '</div></div>';
+  h+='<button class="check-btn" style="border-color:'+(complete?color:'rgba(255,255,255,0.1)')+';background:'+(complete?color:'transparent')+';color:'+(complete?'#000':'transparent')+'" onclick="event.stopPropagation();quickComplete(\''+it.id+'\')">✓</button>';
+  h+='</div>';
+
+  if(open){
+    h+='<div class="ex-expanded"><p class="ex-desc">'+it.desc+'</p>';
+    h+='<div class="stats-row">'+
+      '<div class="stat" style="border-right:1px solid rgba(255,255,255,0.04)"><div class="stat-val" style="color:'+color+'">'+it.sets+'</div><div class="stat-lbl">Series</div></div>'+
+      '<div class="stat" style="border-right:1px solid rgba(255,255,255,0.04)"><div class="stat-val">'+it.reps+'</div><div class="stat-lbl">Reps</div></div>'+
+      '<div class="stat"><div class="stat-val">'+(it.rest>0?it.rest+'s':'—')+'</div><div class="stat-lbl">Descanso</div></div></div>';
+
+    if(it.peso){
+      const hist=history(it.id);
+      h+='<div class="weight-box"><div class="weight-header"><span class="weight-lbl">Peso por serie</span>'+
+        (last?'<span class="weight-last" style="color:'+color+'">última vez '+last.w+' kg'+(last.r?' × '+last.r:'')+'</span>':'<span class="weight-last" style="color:rgba(255,255,255,0.25)">primera vez</span>')+'</div>';
+      if(hist.length){
+        h+='<div class="hist-row">'+hist.slice(-6).map(x=>
+          '<div class="hist-cell"><div class="hist-inner" style="background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.07)">'+x.w+'</div><div class="hist-date">'+shortDate(x.date)+'</div></div>'
+        ).join('')+'</div>';
       }
-
-      expandedHTML = `<div class="ex-expanded">
-        <p class="ex-desc">${ex.desc}</p>
-        ${videoHTML}
-        <div class="stats-row">
-          <div class="stat" style="border-right:1px solid rgba(255,255,255,0.04)">
-            <div class="stat-val" style="color:${color}">${currentWeek === 9 ? ex.sets + 1 : ex.sets}</div><div class="stat-lbl">${currentWeek === 9 ? 'Series +1' : 'Series'}</div>
-          </div>
-          <div class="stat" style="border-right:1px solid rgba(255,255,255,0.04)">
-            <div class="stat-val" style="color:#eee">${ex.reps}</div><div class="stat-lbl">Reps</div>
-          </div>
-          <div class="stat">
-            <div class="stat-val" style="color:#eee">${currentWeek === 9 ? '30s' : '60s'}</div><div class="stat-lbl">Descanso</div>
-          </div>
-        </div>
-        ${weightHTML}
-      </div>`;
+      h+='<div class="set-inputs">';
+      s.forEach((st,i)=>{
+        h+='<div class="set-line"><span class="set-num">S'+(i+1)+'</span>'+
+          '<input class="set-in" type="number" inputmode="decimal" placeholder="'+(last&&last.w?last.w:'kg')+'" value="'+(st.w||'')+'" data-ex="'+it.id+'" data-i="'+i+'" data-f="w" style="'+(st.done?'border-color:'+color+'50':'')+'"/>'+
+          '<span class="set-x">×</span>'+
+          '<input class="set-in" style="width:64px" type="number" inputmode="numeric" placeholder="reps" value="'+(st.r||'')+'" data-ex="'+it.id+'" data-i="'+i+'" data-f="r"/>'+
+          '<button class="set-check" style="'+(st.done?'background:'+color+';border-color:'+color+';color:#000':'')+'" onclick="toggleSet2(\''+it.id+'\','+i+')">✓</button></div>';
+      });
+      h+='</div>';
+      if(last&&s.some(x=>x.done&&x.w)){
+        const todayMax=Math.max(...s.filter(x=>x.done&&x.w).map(x=>Number(x.w)));
+        if(todayMax>=Number(last.w))h+='<div class="note-line" style="color:#4ade80">Igualaste o superaste la última vez. Si te quedaron 2 en reserva, subí la próxima.</div>';
+      }
+      h+='</div>';
+    }else{
+      h+='<div class="set-inputs">';
+      s.forEach((st,i)=>{
+        h+='<div class="set-line"><span class="set-num">S'+(i+1)+'</span>'+
+          '<input class="set-in" style="width:auto;flex:1" type="text" placeholder="hecho / segundos / notas" value="'+(st.r||'')+'" data-ex="'+it.id+'" data-i="'+i+'" data-f="r"/>'+
+          '<button class="set-check" style="'+(st.done?'background:'+color+';border-color:'+color+';color:#000':'')+'" onclick="toggleSet2(\''+it.id+'\','+i+')">✓</button></div>';
+      });
+      h+='</div>';
     }
-
-    return `<div class="ex-card" style="background:${done ? color+'0d' : 'rgba(255,255,255,0.025)'};border:1px solid ${done ? color+'28' : 'rgba(255,255,255,0.05)'}">
-      <div class="ex-row" onclick="toggleExpand('${key}')">
-
-        <div class="ex-info">
-          <div class="ex-name${done ? ' done' : ''}">${ex.name}</div>
-          <div class="ex-target">${ex.target}</div>
-          <div class="ex-tags">
-            <span class="ex-sets" style="color:${color};background:${color}15">${ex.sets} × ${ex.reps}</span>
-            <span class="equip-badge" style="color:${es.color};background:${es.bg}">${es.label}</span>
-            ${sug ? `<span class="ex-suggested">${sug.value} ${sug.unit}</span>` : ''}
-          </div>
-        </div>
-        <button class="check-btn" style="border-color:${done ? color : 'rgba(255,255,255,0.1)'};background:${done ? color : 'transparent'};color:${done ? '#000' : 'transparent'}"
-          onclick="event.stopPropagation();toggleDone('${key}')">&#10003;</button>
-      </div>
-      ${expandedHTML}
-    </div>`;
-  }).join('');
-
-  document.getElementById('cardioCard').style.background = color + '0e';
-  document.getElementById('cardioCard').style.border = '1px solid ' + color + '22';
-  document.getElementById('cardioText').textContent = cardio.text;
-  document.getElementById('cardioNote').textContent = cardio.note;
-  document.getElementById('cardioNote').style.display = cardio.note ? 'block' : 'none';
-  renderCardioBtn();
-
-  // Phase banner
-  const phase = getPhase(currentWeek);
-  document.getElementById('phaseBanner').style.borderColor = phase.color + '30';
-  document.getElementById('phaseBanner').style.background = phase.color + '0e';
-  document.getElementById('phaseLabel').style.color = phase.color;
-  document.getElementById('phaseLabel').textContent = phase.label.toUpperCase();
-  document.getElementById('phaseTip').textContent = phase.tip;
+    h+='</div>';
+  }
+  return h;
 }
 
-function switchDay(i){ activeDay=i; expanded=null; saveState(); render(); }
-function changeWeek(d){ currentWeek=Math.max(1,Math.min(12,currentWeek+d)); saveState(); render(); }
-function jumpWeek(w){ currentWeek=w; render(); }
-function toggleDone(key){ completed[key]=!completed[key]; saveState(); render(); }
-function toggleCardio(){
-  const key = 'cardio-' + activeDay;
-  completed[key] = !completed[key];
-  saveState();
-  renderCardioBtn();
+function quickComplete(exid){
+  const tk=todayKey();const s=sets[tk][exid];if(!s)return;
+  const all=s.every(x=>x.done);
+  s.forEach(x=>x.done=!all);
+  save();render();
 }
-function renderCardioBtn(){
-  const key = 'cardio-' + activeDay;
-  const done = !!completed[key];
-  const day = days[activeDay];
-  const btn = document.getElementById('cardioDoneBtn');
-  if(!btn) return;
-  btn.style.borderColor = done ? day.color : 'rgba(255,255,255,0.1)';
-  btn.style.background = done ? day.color : 'transparent';
-  btn.style.color = done ? '#000' : 'transparent';
-}
-function toggleExpand(key){ expanded = expanded===key ? null : key; render(); }
-function saveWeight(key,val){ weights[key]=val; saveState(); }
+function toggleSet2(exid,i){const tk=todayKey();sets[tk][exid][i].done=!sets[tk][exid][i].done;save();render();}
+function chDay(i){activeDay=i;expanded=null;save();render();}
+function chWeek(d){currentWeek=Math.max(1,Math.min(12,currentWeek+d));save();render();}
+function setAB(m){abMode=m;expanded=null;save();render();}
 
-loadState();
-render();
+function bindInputs(){
+  document.querySelectorAll('.set-in').forEach(inp=>{
+    inp.addEventListener('input',e=>{
+      setVal(e.target.dataset.ex,parseInt(e.target.dataset.i),e.target.dataset.f,e.target.value);
+    });
+    inp.addEventListener('click',e=>e.stopPropagation());
+  });
+}
+
+function renderFood(){
+  const tk=todayKey();
+  const pc=protein[tk]||0;
+  let h='<div class="food-wrap"><div class="food-h">Plato</div>'+
+    '<div class="food-sub">Sin contar nada. Ventana desde el almuerzo, tres comidas. Lo único que seguís es la proteína.</div>';
+  h+='<div class="hand-grid">'+
+    '<div class="hand-card"><div class="hand-emoji">✋</div><div class="hand-name">Proteína</div><div class="hand-portion">1½ palma</div></div>'+
+    '<div class="hand-card"><div class="hand-emoji">✊</div><div class="hand-name">Carbo</div><div class="hand-portion">1 puñado</div></div>'+
+    '<div class="hand-card"><div class="hand-emoji">🤲</div><div class="hand-name">Verdura</div><div class="hand-portion">2 puños</div></div>'+
+    '<div class="hand-card"><div class="hand-emoji">👍</div><div class="hand-name">Grasa</div><div class="hand-portion">1 pulgar</div></div></div>';
+  MEALS.forEach(m=>{
+    const open=expanded==='meal-'+m.id;
+    h+='<div class="meal-card"><div class="meal-top" onclick="toggleExpand(\'meal-'+m.id+'\')">'+
+      '<div><div class="meal-name">'+m.name+'</div><div class="meal-macros">'+m.macros+'</div></div>'+
+      '<span style="color:rgba(255,255,255,0.3);font-size:18px">'+(open?'−':'+')+'</span></div>';
+    if(open)h+='<div class="meal-opts">'+m.opts+'</div>';
+    h+='</div>';
+  });
+  h+='<div class="prot-track"><div class="weight-lbl">Proteína de hoy · 3 tomas</div>'+
+    '<div class="prot-dots">'+[0,1,2].map(i=>
+      '<button class="prot-dot" style="border-color:'+(i<pc?'#4ade80':'rgba(255,255,255,0.15)')+';background:'+(i<pc?'#4ade80':'transparent')+';color:'+(i<pc?'#0c0c10':'rgba(255,255,255,0.15)')+'" onclick="setProtein('+(i+1)+')">✓</button>'
+    ).join('')+'</div></div>';
+  h+='</div>';
+  return h;
+}
+function setProtein(n){const tk=todayKey();protein[tk]=(protein[tk]===n)?n-1:n;save();render();}
+
+function renderProg(){
+  let h='<div class="prog-wrap"><div class="food-h">Progreso</div>'+
+    '<div class="food-sub">Lo que importa: las cargas subiendo. El peso corporal, una vez al mes alcanza.</div>';
+
+  h+='<div class="weight-lbl" style="margin-bottom:6px">Peso corporal</div>';
+  h+='<div class="bw-row"><input class="bw-in" id="bwin" type="number" inputmode="decimal" placeholder="kg de hoy"/>'+
+    '<button class="bw-save" onclick="saveBW()">Guardar</button></div>';
+  if(bw.length){
+    const last=bw[bw.length-1],first=bw[0];
+    h+='<div style="margin-top:12px;font-size:14px;font-weight:700">'+last.kg+' kg';
+    if(bw.length>1){const d=(last.kg-first.kg).toFixed(1);h+='<span style="color:rgba(255,255,255,0.4);font-size:12px;font-weight:400"> ('+d+' kg desde el inicio)</span>';}
+    h+='</div>';
+  }
+
+  h+='<div class="weight-lbl" style="margin:26px 0 4px">Cargas · mejor serie de cada sesión</div>';
+  const allEx={};
+  DAYS.forEach(d=>allItems(d).forEach(raw=>{
+    [raw,resolveItem(Object.assign({},raw))].forEach(()=>{});
+    if(raw.peso){allEx[raw.id]=raw.name;if(raw.altName)allEx[raw.id+'_b']=raw.altName;}
+  }));
+  let any=false;
+  const seen={};
+  Object.keys(sets).sort().forEach(dk=>{
+    Object.keys(sets[dk]).forEach(exid=>{
+      if(exid==='__day')return;
+      const hist=history(exid);
+      if(!hist.length)return;
+      seen[exid]=hist;
+    });
+  });
+  const nameOf=(id)=>{
+    for(const d of DAYS)for(const raw of allItems(d)){
+      if(raw.id===id)return raw.name;
+      const alt=resolveItem(Object.assign({},raw,{rot:'x'}));
+    }
+    for(const d of DAYS)for(const raw of allItems(d)){
+      if(raw.rot&&raw.altName){const r=Object.assign({},raw);if(raw.id===id)return raw.altName;}
+    }
+    return id;
+  };
+  const ids=Object.keys(seen);
+  if(!ids.length)h+='<div class="empty">Todavía no registraste series con peso. Cuando termines tu primer día, acá vas a ver cómo suben las cargas.</div>';
+  ids.forEach(id=>{
+    any=true;
+    const hist=seen[id];const l=hist[hist.length-1];const p=hist.length>1?hist[hist.length-2]:null;
+    const diff=p?l.w-p.w:0;
+    h+='<div class="prog-ex"><span class="prog-nm">'+nameOf(id)+'<span class="prog-dt"> · '+shortDate(l.date)+'</span></span>'+
+      '<span class="prog-vl">'+l.w+' kg'+(p&&diff!==0?'<span style="color:'+(diff>0?'#f472b6':'rgba(255,255,255,0.3)')+'"> '+(diff>0?'▲'+diff:'▼'+Math.abs(diff))+'</span>':'')+'</span></div>';
+  });
+  h+='</div>';
+  return h;
+}
+function saveBW(){
+  const v=document.getElementById('bwin').value;
+  const kg=parseFloat(String(v).replace(',','.'));
+  if(!kg||kg<=0)return;
+  const tk=todayKey();
+  bw=bw.filter(x=>x.date!==tk);bw.push({date:tk,kg:kg});bw.sort((a,b)=>a.date.localeCompare(b.date));
+  save();render();
+}
+
+load();render();
 </script>
 </body>
 </html>
